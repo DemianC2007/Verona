@@ -3,7 +3,8 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { WA_NUM } from '../data/content'
 
 // Formulario que sale al pedir un ramo o arreglo: día, hora y quién recibe.
-// Al enviarlo abre WhatsApp con el pedido ya escrito.
+// Al enviarlo se guarda en el panel (y llega por correo) y abre WhatsApp con el pedido ya escrito.
+const PEDIDOS_URL = 'https://analytics.veronafloreria.online/api/pedido'
 const hoy = () => {
   const d = new Date()
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
@@ -21,11 +22,12 @@ export default function PedidoForm({ pedido, onClose }) {
   const [dia, setDia] = useState('')
   const [hora, setHora] = useState('')
   const [recibe, setRecibe] = useState('')
+  const [notas, setNotas] = useState('')
   const firstRef = useRef(null)
 
   useEffect(() => {
     if (!pedido) return
-    setDia(''); setHora(''); setRecibe('')
+    setDia(''); setHora(''); setRecibe(''); setNotas('')
     const t = setTimeout(() => firstRef.current?.focus(), 250)
     const onKey = (e) => e.key === 'Escape' && onClose()
     window.addEventListener('keydown', onKey)
@@ -42,12 +44,20 @@ export default function PedidoForm({ pedido, onClose }) {
       `Día de entrega: ${fechaLarga(dia)}`,
       `Hora de entrega: ${horaBonita(hora)}`,
       `Persona que recibe: ${recibe.trim()}`,
+      ...(notas.trim() ? [`Notas: ${notas.trim()}`] : []),
       '',
       '¿Me confirman disponibilidad y precio?',
     ].join('\n')
     window.dispatchEvent(new CustomEvent('ca:event', {
       detail: { name: 'clic_whatsapp', seccion: pedido.seccion, texto: 'Formulario de pedido', mensaje: `Pedido de ${pedido.etiqueta}` },
     }))
+    try {
+      fetch(PEDIDOS_URL, {
+        method: 'POST', keepalive: true, headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify({ tipo: pedido.etiqueta, seccion: pedido.seccion, detalle: pedido.detalle, imagen: pedido.imagenUrl,
+          dia, hora, recibe: recibe.trim(), notas: notas.trim() }),
+      }).catch(() => {})
+    } catch (x) { /* sin conexión: WhatsApp sigue funcionando */ }
     const url = `https://wa.me/${WA_NUM}?text=${encodeURIComponent(texto)}`
     // Con 'noopener' window.open siempre regresa null; se corta el opener a mano
     const w = window.open(url, '_blank')
@@ -111,6 +121,14 @@ export default function PedidoForm({ pedido, onClose }) {
                 <label htmlFor="pedido-recibe" className={etiqueta}>Persona que recibe</label>
                 <input id="pedido-recibe" type="text" required maxLength={80} autoComplete="off" placeholder="Nombre de quien recibe"
                   value={recibe} onChange={(e) => setRecibe(e.target.value)} className={campo} />
+              </div>
+              <div>
+                <label htmlFor="pedido-notas" className={etiqueta}>
+                  Notas de la entrega <span className="font-normal text-stone-400">(opcional)</span>
+                </label>
+                <textarea id="pedido-notas" rows={3} maxLength={600}
+                  placeholder="Dirección, mensaje para la tarjeta, colores que prefieres…"
+                  value={notas} onChange={(e) => setNotas(e.target.value)} className={`${campo} resize-none`} />
               </div>
               <button type="submit"
                 className="w-full h-12 bg-petal text-white text-[15px] font-sans font-medium tracking-wide hover:bg-petal-dark transition-colors duration-200">

@@ -71,7 +71,7 @@ export default function Catalogo() {
   const pedir = useCallback((item) => {
     const etiqueta = item.tipo === 'arreglo' ? 'arreglo' : 'ramo'
     setPedido({
-      etiqueta, seccion: 'catalogo', imagen: item.image,
+      etiqueta, seccion: 'catalogo', imagen: item.image, imagenUrl: `${PROD_BASE}/images/${item.id}.jpg`,
       detalle: `${PROD_BASE}/images/${item.id}.jpg (${item.flores.join(', ').toLowerCase()})`,
     })
   }, [])
