@@ -10,12 +10,15 @@ const TABS = [
 
 const ALL = [...CATALOG_ARREGLOS, ...CATALOG_RAMOS]
 
+const PROD_BASE = 'https://veronafloreria.online'
+
 function CatalogCard({ item, index }) {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-40px' })
-  const label = item.tipo === 'arreglo' ? 'este arreglo' : 'este ramo'
+  const label = item.tipo === 'arreglo' ? 'arreglo' : 'ramo'
+  const imageUrl = `${PROD_BASE}/images/${item.id}.jpg`
   const waMsg = encodeURIComponent(
-    `Hola Verona, me interesa ${label} del catálogo. ¿Me puede dar más información?`
+    `Hola Verona, me interesa este ${label} del catálogo:\n${imageUrl}\n\n¿Me puede dar más información y precio?`
   )
 
   return (

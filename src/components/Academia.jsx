@@ -1,5 +1,5 @@
-import { useRef } from 'react'
-import { motion, useInView } from 'framer-motion'
+import { useRef, useState } from 'react'
+import { motion, useInView, AnimatePresence } from 'framer-motion'
 import { COURSES, WA_NUM } from '../data/content'
 
 function SectionHeader({ inView }) {
@@ -49,6 +49,7 @@ function CourseCard({ course, index, sectionInView }) {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-60px' })
   const visible = sectionInView || inView
+  const [syllabusOpen, setSyllabusOpen] = useState(false)
 
   return (
     <motion.article
@@ -65,6 +66,11 @@ function CourseCard({ course, index, sectionInView }) {
             {course.tag}
           </span>
         )}
+        {course.badge && (
+          <span className="absolute top-4 right-4 z-10 bg-charcoal/80 text-white text-[10px] font-sans tracking-wide px-3 py-1">
+            {course.badge}
+          </span>
+        )}
         <img
           src={course.image}
           alt={course.title}
@@ -78,29 +84,92 @@ function CourseCard({ course, index, sectionInView }) {
           {course.subtitle}
         </span>
         <h3 className="font-serif text-xl font-medium text-charcoal mb-3 leading-snug">{course.title}</h3>
-        <p className="font-sans text-stone-500 text-sm leading-relaxed flex-1 mb-5">{course.description}</p>
-        <div className="flex items-center justify-between pt-4 border-t border-charcoal/[0.08]">
-          <div>
-            <div className="font-serif text-xl text-charcoal">{course.price}</div>
-            <div className="text-[11px] text-stone-400 font-sans mt-0.5">{course.duration}</div>
+        <p className="font-sans text-stone-500 text-sm leading-relaxed mb-4">{course.description}</p>
+
+        {/* Audience note (curso 3) */}
+        {course.audience && (
+          <p className="font-sans text-[11px] text-stone-400 italic leading-relaxed mb-4 border-l-2 border-petal/40 pl-3">
+            {course.audience}
+          </p>
+        )}
+
+        {/* Syllabus toggle */}
+        {course.syllabus && course.syllabus.length > 0 && (
+          <div className="mb-4">
+            <button
+              onClick={() => setSyllabusOpen(v => !v)}
+              className="flex items-center gap-1.5 text-[11px] font-sans font-medium text-stone-500 hover:text-charcoal transition-colors duration-200"
+            >
+              <svg
+                width="12" height="12" viewBox="0 0 12 12" fill="none"
+                className={`transition-transform duration-200 ${syllabusOpen ? 'rotate-90' : ''}`}
+              >
+                <path d="M4 2l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+              {syllabusOpen ? 'Ocultar temario' : 'Ver temario completo'}
+            </button>
+            <AnimatePresence>
+              {syllabusOpen && (
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: 'auto', opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                  className="overflow-hidden"
+                >
+                  <div className="pt-3 space-y-3">
+                    {course.syllabus.map((block) => (
+                      <div key={block.label}>
+                        <div className="text-[10px] font-sans font-semibold tracking-[0.2em] text-petal uppercase mb-1">{block.label}</div>
+                        <ul className="space-y-0.5">
+                          {block.items.map((item) => (
+                            <li key={item} className="flex items-start gap-2 text-[12px] font-sans text-stone-500">
+                              <span className="mt-1.5 w-1 h-1 rounded-full bg-petal/60 shrink-0" />
+                              {item}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ))}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
-          <a
-            href={waLink(course.title)}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 text-petal text-sm font-sans font-medium hover:gap-3 transition-all duration-200"
-          >
-            Reservar por WhatsApp
-            <svg width="15" height="15" viewBox="0 0 16 16" fill="none">
-              <path
-                d="M3 8h10M9 4l4 4-4 4"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </a>
+        )}
+
+        {/* Bottom: price + CTA */}
+        <div className="mt-auto pt-4 border-t border-charcoal/[0.08] space-y-3">
+          <div className="flex items-center justify-between">
+            <div>
+              <div className="font-serif text-xl text-charcoal">{course.price}</div>
+              <div className="text-[11px] text-stone-400 font-sans mt-0.5">{course.duration}</div>
+            </div>
+            <a
+              href={waLink(course.title)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-petal text-sm font-sans font-medium hover:gap-3 transition-all duration-200"
+            >
+              Reservar
+              <svg width="15" height="15" viewBox="0 0 16 16" fill="none">
+                <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </a>
+          </div>
+          {course.brochure && (
+            <a
+              href={course.brochure}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 text-[11px] font-sans text-stone-400 hover:text-charcoal transition-colors duration-200"
+            >
+              <svg width="13" height="13" viewBox="0 0 16 16" fill="none">
+                <path d="M8 2v8M5 7l3 3 3-3M3 13h10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+              Descargar programa (PDF)
+            </a>
+          )}
         </div>
       </div>
     </motion.article>
