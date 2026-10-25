@@ -7,7 +7,7 @@ import Foto from './Foto'
 
 const TABS = [
   { key: 'all', label: 'Todos' },
-  { key: 'arreglo', label: 'Arreglos' },
+  { key: 'arreglo', label: 'Arreglos en caja / jarrón' },
   { key: 'ramo', label: 'Ramos' },
 ]
 
@@ -207,12 +207,22 @@ export default function Catalogo() {
                 <span className="font-sans text-[11px] text-stone-500">{fotos} {fotos === 1 ? 'foto' : 'fotos'}</span>
               </button>
             ))}
+            <a
+              href={`https://wa.me/${WA_NUM}?text=${encodeURIComponent(busca.trim()
+                ? `Hola Magenta, busco un arreglo con ${busca.trim()}. ¿Me lo pueden hacer?`
+                : 'Hola Magenta, busco un arreglo con una flor que no vi en el catálogo.')}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex flex-col items-center justify-center gap-1 py-3 px-2 border border-dashed border-petal/60 bg-white hover:bg-petal-light text-center transition-colors duration-150"
+            >
+              <span className="w-[60px] h-[60px] flex items-center justify-center font-serif text-4xl text-petal" aria-hidden="true">?</span>
+              <span className="font-sans text-[13px] font-medium text-charcoal leading-tight">No está la que yo quiero</span>
+              <span className="font-sans text-[11px] text-stone-500">Pídela por WhatsApp</span>
+            </a>
           </div>
           {q && !visibles.length && (
             <p className="font-sans text-sm text-stone-500 mt-4">
-              No tenemos fotos con "{busca.trim()}", pero te lo podemos armar.{' '}
-              <a href={`https://wa.me/${WA_NUM}?text=${encodeURIComponent(`Hola Magenta, ¿me pueden hacer un arreglo con ${busca.trim()}?`)}`}
-                target="_blank" rel="noopener noreferrer" className="text-petal underline underline-offset-2">Pregúntanos por WhatsApp</a>
+              No tenemos fotos con "{busca.trim()}". Toca "No está la que yo quiero" y te la armamos por WhatsApp.
             </p>
           )}
         </div>

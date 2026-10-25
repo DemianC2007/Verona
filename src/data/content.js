@@ -76,24 +76,25 @@ export const ARRANGEMENTS = [
   },
 ]
 
-// Flores que se ven en cada foto del catálogo (para el buscador por flor).
+// Flores que se ven en cada foto del catálogo (para el buscador por flor). Revisadas foto por foto 2026-10-25;
+// solo aparecen en el buscador las flores que sí están en alguna foto.
 // Para corregir una foto, cambia su lista; las flores del buscador salen de aquí solas.
 const FLORES_ARREGLOS = [
   ['Rosas'],                                  // 01
   ['Lilis'],                                  // 02
-  ['Crisantemos', 'Gerberas'],                // 03
+  ['Rosas', 'Crisantemos', 'Lilis'],          // 03
   ['Rosas', 'Perritos'],                      // 04
-  ['Rosas', 'Margaritas', 'Alstroemerias'],   // 05
+  ['Rosas', 'Margaritas'],                    // 05
   ['Lilis', 'Rosas'],                         // 06
   ['Gerberas', 'Rosas', 'Margaritas'],        // 07
   ['Rosas', 'Alstroemerias'],                 // 08
   ['Rosas', 'Alstroemerias'],                 // 09
-  ['Girasoles', 'Rosas', 'Claveles'],         // 10
+  ['Girasoles', 'Rosas', 'Claveles', 'Margaritas'], // 10
   ['Rosas'],                                  // 11
   ['Crisantemos', 'Rosas'],                   // 12
-  ['Tulipanes'],                              // 13
+  ['Tulipanes', 'Claveles'],                  // 13
   ['Rosas', 'Gerberas'],                      // 14
-  ['Crisantemos', 'Rosas'],                   // 15
+  ['Crisantemos', 'Rosas', 'Alstroemerias'],  // 15
   ['Girasoles', 'Rosas'],                     // 16
 ]
 
