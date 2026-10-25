@@ -1,77 +1,178 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sitio en mantenimiento · Calleros &amp; Co</title>
-<meta name="description" content="Este sitio está en mantenimiento. Desarrollado por Calleros &amp; Co.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 90 90'%3E%3Crect width='90' height='90' rx='18' fill='%231A334A'/%3E%3Cpath d='M 61 20 A 30 30 0 1 0 61 70' stroke='%2327E6EC' stroke-width='16' fill='none'/%3E%3C/svg%3E">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Syne:wght@700;800&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --navy: #1A334A; --teal-dark: #1E536E; --teal: #18A3B7;
-    --cyan: #27E6EC; --blue: #5AA5CD; --ink: #0B1929;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  html, body { height: 100%; }
-  body {
-    min-height: 100vh; display: flex; flex-direction: column;
-    background: radial-gradient(ellipse at 20% 0%, var(--teal-dark) 0%, var(--navy) 45%, var(--ink) 100%);
-    color: #fff; font-family: Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;
-  }
-  header { padding: 28px 24px; }
-  header svg { height: 44px; width: auto; display: block; }
-  main {
-    flex: 1; display: flex; flex-direction: column; justify-content: center;
-    max-width: 720px; margin: 0 auto; padding: 24px 24px 64px; width: 100%;
-  }
-  .badge {
-    display: inline-flex; align-items: center; gap: 10px; align-self: flex-start;
-    padding: 8px 14px; border: 1px solid rgba(39,230,236,.35); border-radius: 999px;
-    color: var(--cyan); font-size: 13px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase;
-  }
-  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--cyan); animation: pulse 1.8s ease-in-out infinite; }
-  @keyframes pulse { 50% { opacity: .3; } }
-  h1 {
-    font-family: Syne, "Helvetica Neue", Helvetica, Arial, sans-serif; font-weight: 800;
-    font-size: clamp(36px, 7vw, 64px); line-height: 1.05; margin: 24px 0 20px;
-  }
-  h1 span { color: var(--cyan); }
-  p { font-size: 18px; line-height: 1.6; color: rgba(255,255,255,.75); font-weight: 300; max-width: 560px; }
-  .bar { height: 4px; border-radius: 4px; background: rgba(255,255,255,.08); margin: 36px 0; max-width: 360px; overflow: hidden; }
-  .bar i { display: block; height: 100%; width: 40%; background: linear-gradient(90deg, var(--teal), var(--cyan)); border-radius: 4px; animation: slide 2.4s ease-in-out infinite; }
-  @keyframes slide { 0% { transform: translateX(-100%); } 100% { transform: translateX(250%); } }
-  .cta {
-    display: inline-block; align-self: flex-start; padding: 14px 22px; border-radius: 10px;
-    background: var(--cyan); color: var(--ink); font-weight: 600; text-decoration: none; font-size: 15px;
-  }
-  .cta:hover { background: #fff; }
-  footer { padding: 24px; text-align: center; font-size: 13px; color: rgba(255,255,255,.5); }
-  footer a { color: var(--blue); text-decoration: none; }
-  footer a:hover { color: var(--cyan); }
-  @media (prefers-reduced-motion: reduce) { .dot, .bar i { animation: none; } }
-</style>
-</head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Página no encontrada | Verona Floral Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --coral: #C96840;
+      --coral-light: #e8845e;
+      --cream: #FAF9F6;
+      --charcoal: #1A1917;
+      --stone: #78716c;
+    }
+
+    body {
+      min-height: 100vh;
+      background-color: var(--cream);
+      color: var(--charcoal);
+      font-family: 'Inter', sans-serif;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Navbar */
+    header {
+      padding: 1.25rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-bottom: 1px solid rgba(26,25,23,0.08);
+    }
+
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--charcoal);
+      text-decoration: none;
+      letter-spacing: 0.04em;
+    }
+
+    .logo span {
+      color: var(--coral);
+    }
+
+    /* Main */
+    main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4rem 1.5rem;
+    }
+
+    .container {
+      text-align: center;
+      max-width: 480px;
+    }
+
+    .number {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: clamp(7rem, 20vw, 10rem);
+      font-weight: 600;
+      line-height: 1;
+      color: var(--coral);
+      opacity: 0.18;
+      user-select: none;
+    }
+
+    .icon {
+      margin: -1rem auto 0;
+      width: 64px;
+      height: 64px;
+    }
+
+    .icon svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: clamp(1.5rem, 5vw, 2rem);
+      font-weight: 400;
+      color: var(--charcoal);
+      margin-top: 1.25rem;
+    }
+
+    p {
+      color: var(--stone);
+      font-size: 0.95rem;
+      line-height: 1.7;
+      margin-top: 0.75rem;
+    }
+
+    .divider {
+      width: 2.5rem;
+      height: 1px;
+      background: var(--coral);
+      opacity: 0.4;
+      margin: 1.75rem auto;
+    }
+
+    .btn {
+      display: inline-block;
+      background-color: var(--coral);
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 0.85rem 2.25rem;
+      border-radius: 2px;
+      transition: background-color 0.2s ease;
+    }
+
+    .btn:hover {
+      background-color: var(--coral-light);
+    }
+
+    /* Footer */
+    footer {
+      padding: 1.5rem 2rem;
+      text-align: center;
+      border-top: 1px solid rgba(26,25,23,0.08);
+    }
+
+    footer p {
+      font-size: 0.78rem;
+      color: var(--stone);
+      opacity: 0.7;
+    }
+  </style>
+    <script defer src="https://crm.calleros.me/api/a/t.js?v=2" data-endpoint="https://crm.calleros.me/api/a/collect"></script>
+  </head>
 <body>
+
   <header>
-    <a href="https://calleros.me" aria-label="Calleros &amp; Co">
-      <svg viewBox="0 0 300 90" fill="none" xmlns="http://www.w3.org/2000/svg" role="img">
-        <path d="M 61 20 A 30 30 0 1 0 61 70" stroke="#27E6EC" stroke-width="16" stroke-linecap="butt"/>
-        <line x1="97" y1="22" x2="97" y2="68" stroke="#FFFFFF" stroke-width="1" stroke-opacity="0.2"/>
-        <text x="112" y="47" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="24" font-weight="800" letter-spacing="2" fill="#FFFFFF">CALLEROS</text>
-        <text x="112" y="65" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="12" font-weight="300" letter-spacing="7" fill="rgba(255,255,255,0.55)">&amp; CO</text>
-      </svg>
-    </a>
+    <a href="/" class="logo">Verona <span>Floral</span> Studio</a>
   </header>
+
   <main>
-    <div class="badge"><span class="dot"></span>En mantenimiento</div>
-    <h1>Estamos trabajando <span>en este sitio.</span></h1>
-    <p>Este sitio está en mantenimiento y en construcción por el momento. Muy pronto volverá a estar disponible.</p>
-    <div class="bar"><i></i></div>
-    <a class="cta" href="https://calleros.me">Conoce Calleros &amp; Co</a>
+    <div class="container">
+      <div class="number">404</div>
+
+      <svg class="icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="32" cy="20" r="9" stroke="#C96840" stroke-width="1.5" fill="none"/>
+        <path d="M23 20 C23 14 20 8 26 6 C26 12 30 16 32 20" stroke="#C96840" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+        <path d="M41 20 C41 14 44 8 38 6 C38 12 34 16 32 20" stroke="#C96840" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+        <path d="M32 20 L32 46" stroke="#C96840" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M22 56 Q32 48 42 56" stroke="#C96840" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      </svg>
+
+      <h1>Esta página no existe</h1>
+      <p>La dirección que buscas no está disponible.<br>Puede que haya sido movida o eliminada.</p>
+
+      <div class="divider"></div>
+
+      <a href="/" class="btn">Volver al inicio</a>
+    </div>
   </main>
-  <footer>Desarrollado por <a href="https://calleros.me">calleros.me</a></footer>
+
+  <footer>
+    <p>© 2025 Verona Floral Studio · Todos los derechos reservados</p>
+  </footer>
+
 </body>
 </html>
