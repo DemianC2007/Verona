@@ -1,8 +1,8 @@
 const NAV = [
-  { label: 'Academia', href: '#academia' },
-  { label: 'Estudio', href: '#estudio' },
-  { label: 'Nuestra Esencia', href: '#esencia' },
-  { label: 'Contacto', href: '#contacto' },
+  { label: 'Catálogo', href: '#catalogo' },
+  { label: 'Eventos', href: '#eventos' },
+  { label: 'Nosotros', href: '#esencia' },
+  { label: 'Cursos', href: '#cursos' },
 ]
 
 const SOCIAL = [
@@ -25,7 +25,7 @@ export default function Footer() {
               />
             </div>
             <p className="font-sans text-stone-500 text-sm leading-relaxed max-w-[220px]">
-              Academia de arte floral y estudio de diseño. Creamos belleza, enseñamos pasión.
+              Arreglos, ramos y decoración floral para eventos en Ciudad Juárez.
             </p>
           </div>
 

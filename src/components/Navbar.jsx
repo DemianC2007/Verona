@@ -2,11 +2,10 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 const NAV_LINKS = [
-  { label: 'Academia', href: '#academia' },
-  { label: 'Estudio', href: '#estudio' },
-  { label: 'Eventos', href: '#eventos' },
   { label: 'Catálogo', href: '#catalogo' },
-  { label: 'Nuestra Esencia', href: '#esencia' },
+  { label: 'Eventos', href: '#eventos' },
+  { label: 'Nosotros', href: '#esencia' },
+  { label: 'Cursos', href: '#cursos' },
   { label: 'Contacto', href: '#contacto' },
 ]
 
@@ -57,10 +56,10 @@ export default function Navbar() {
           {/* CTA + hamburger */}
           <div className="flex items-center gap-5">
             <a
-              href="#academia"
+              href="#catalogo"
               className="hidden lg:inline-flex items-center px-6 py-2.5 bg-petal text-white text-[13px] font-sans font-medium tracking-wide hover:bg-petal-dark transition-colors duration-200"
             >
-              Reserva tu Curso
+              Ver catálogo
             </a>
 
             <button
@@ -117,14 +116,14 @@ export default function Navbar() {
               ))}
             </ul>
             <motion.a
-              href="#academia"
+              href="#catalogo"
               onClick={() => setMenuOpen(false)}
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.32, duration: 0.4 }}
               className="px-10 py-3.5 bg-petal text-white text-sm font-sans font-medium tracking-wide hover:bg-petal-dark transition-colors duration-200"
             >
-              Reserva tu Curso
+              Ver catálogo
             </motion.a>
           </motion.div>
         )}

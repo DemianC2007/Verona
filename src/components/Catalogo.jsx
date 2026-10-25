@@ -5,7 +5,7 @@ import PedidoForm from './PedidoForm'
 
 const TABS = [
   { key: 'all', label: 'Todos' },
-  { key: 'arreglo', label: 'Arreglos en caja / jarrón' },
+  { key: 'arreglo', label: 'Arreglos' },
   { key: 'ramo', label: 'Ramos' },
 ]
 
@@ -78,10 +78,10 @@ export default function Catalogo() {
   const cerrar = useCallback(() => setPedido(null), [])
 
   return (
-    <section id="catalogo" className="py-24 lg:py-32 bg-pearl-dark">
+    <section id="catalogo" className="pt-16 pb-24 lg:pt-24 lg:pb-32 bg-pearl-dark">
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
         {/* Header */}
-        <div ref={headerRef} className="mb-12 lg:mb-16">
+        <div ref={headerRef} className="mb-8 lg:mb-10">
           <motion.span
             initial={{ opacity: 0 }}
             animate={inView ? { opacity: 1 } : {}}
@@ -110,53 +110,48 @@ export default function Catalogo() {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="mt-5 font-sans text-stone-500 text-base leading-relaxed max-w-xl"
           >
-            Arreglos en caja y jarrón, ramos frescos y bouquets de autor. Busca por tu flor favorita y toca el que te guste para pedirlo.
+            Arreglos en caja y jarrón, ramos y bouquets. Filtra por la flor que buscas y toca el que te guste para pedirlo.
           </motion.p>
         </div>
 
-        {/* Filter tabs */}
+        {/* Filtros: se quedan pegados arriba mientras recorren las fotos */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5, delay: 0.5 }}
-          className="flex flex-wrap gap-2 mb-10"
+          className="sticky top-24 z-30 bg-pearl-dark -mx-6 px-6 lg:-mx-12 lg:px-12 pt-3 pb-3 mb-6 border-b border-charcoal/10"
         >
-          {TABS.map((t) => (
-            <button
-              key={t.key}
-              onClick={() => setTab(t.key)}
-              className={`px-5 py-2 text-[12px] font-sans font-medium tracking-wide transition-all duration-200 ${
-                tab === t.key
-                  ? 'bg-petal text-white'
-                  : 'bg-transparent text-stone-500 border border-charcoal/15 hover:border-petal/60 hover:text-charcoal'
-              }`}
-            >
-              {t.label}
-            </button>
-          ))}
-        </motion.div>
-
-        {/* Buscar por flor */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5, delay: 0.55 }}
-          className="mb-10 -mt-4"
-        >
-          <p id="buscar-flor" className="font-sans text-[13px] text-stone-500 mb-3">Buscar por flor</p>
-          <div role="group" aria-labelledby="buscar-flor" className="flex gap-2 overflow-x-auto pb-2 -mx-6 px-6 lg:mx-0 lg:px-0 lg:flex-wrap">
+          <div className="flex items-center justify-between gap-3 mb-3">
+            <div role="group" aria-label="Tipo" className="flex border border-charcoal/15">
+              {TABS.map((t) => (
+                <button
+                  key={t.key}
+                  onClick={() => setTab(t.key)}
+                  aria-pressed={tab === t.key}
+                  className={`px-3 sm:px-5 py-2 text-[12px] font-sans font-medium transition-colors duration-200 ${
+                    tab === t.key ? 'bg-petal text-white' : 'text-stone-600 hover:text-charcoal'
+                  }`}
+                >
+                  {t.label}
+                </button>
+              ))}
+            </div>
+            <span className="font-sans text-[12px] text-stone-500 flex-none">{items.length} {items.length === 1 ? 'diseño' : 'diseños'}</span>
+          </div>
+          <div role="group" aria-label="Buscar por flor" className="flex gap-2 overflow-x-auto -mx-6 px-6 lg:mx-0 lg:px-0 lg:flex-wrap" style={{ scrollbarWidth: 'none' }}>
+            <span id="buscar-flor" className="flex-none self-center font-sans text-[12px] text-stone-500 pr-1">Flor:</span>
             {['', ...FLORES].map((f) => (
               <button
                 key={f || 'todas'}
                 onClick={() => setFlor(f)}
                 aria-pressed={flor === f}
-                className={`flex-none px-4 py-1.5 text-[12px] font-sans transition-colors duration-200 border ${
+                className={`flex-none px-3.5 py-1.5 text-[12px] font-sans transition-colors duration-200 border ${
                   flor === f
                     ? 'bg-charcoal text-white border-charcoal'
                     : 'bg-pearl text-charcoal border-charcoal/15 hover:border-petal/60'
                 }`}
               >
-                {f || 'Todas las flores'}
+                {f || 'Todas'}
               </button>
             ))}
           </div>

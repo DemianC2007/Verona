@@ -4,7 +4,7 @@ import { IMAGES } from '../data/content'
 
 const PILLARS = [
   ['Flores frescas', 'Seleccionadas cada mañana del mercado'],
-  ['Talleres íntimos', 'Máximo 6 estudiantes por sesión'],
+  ['Eventos', 'Bodas, XV años y reuniones'],
   ['Diseño de autor', 'Cada pieza es única, sin repetición'],
   ['Entrega a domicilio', 'Con cuidado, a tiempo y con amor'],
 ]
@@ -87,8 +87,7 @@ export default function Esencia() {
             transition={{ duration: 0.6, delay: 0.62 }}
             className="font-sans text-stone-500 text-base leading-relaxed mb-10"
           >
-            Desde nuestra Academia formamos a la próxima generación de diseñadores florales con la
-            misma pasión y rigor con la que construimos cada pieza de nuestro Estudio.
+            Cada arreglo lo armamos a mano, con flores frescas, pensando en la persona que lo va a recibir.
           </motion.p>
 
           {/* Pillars grid */}
