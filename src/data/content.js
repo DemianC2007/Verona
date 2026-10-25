@@ -1,7 +1,7 @@
 const B = import.meta.env.BASE_URL
 
 export const IMAGES = {
-  hero: `${B}images/hero.png`,
+  hero: `${B}images/mini/hero.webp`,
   esencia: `${B}images/arreglo-novial.jpeg`,
 }
 
@@ -121,43 +121,44 @@ const FLORES_RAMOS = [
 
 const catalogo = (tipo, flores) => flores.map((f, i) => {
   const id = `${tipo}_${String(i + 1).padStart(2, '0')}`
-  return { id, tipo, flores: f, image: `${B}images/${id}.jpg` }
+  // image: miniatura ligera para la página; la foto grande (images/<id>.jpg) es la que se manda por WhatsApp
+  return { id, tipo, flores: f, image: `${B}images/mini/${id}.webp` }
 })
 
 export const CATALOG_ARREGLOS = catalogo('arreglo', FLORES_ARREGLOS)
 export const CATALOG_RAMOS = catalogo('ramo', FLORES_RAMOS)
 
 export const EVENTOS_GALLERY = [
-  { id: 1,  image: `${B}images/evento_n01.jpg`, alt: 'Mesa de banquete estilo boho al atardecer en la playa' },
-  { id: 2,  image: `${B}images/evento_n03.jpg`, alt: 'Decoración de mesa larga con camino fucsia en terraza frente al mar' },
-  { id: 3,  image: `${B}images/evento_n14.jpg`, alt: 'Altar ceremonial iluminado con flores naranjas y rojas en la playa' },
-  { id: 4,  image: `${B}images/evento_n26.jpg`, alt: 'Arco circular boho con pampas grass junto a alberca' },
-  { id: 5,  image: `${B}images/evento_n22.jpg`, alt: 'Montaje de cena nocturna con cenefas de macramé y vegetación' },
-  { id: 6,  image: `${B}images/evento_n08.jpg`, alt: 'Runner floral multicolor con rosas amarillas y rosas en jardín' },
-  { id: 7,  image: `${B}images/evento_n04.jpg`, alt: 'Mesa larga con floreros de vidrio y rosas rosas en rooftop' },
-  { id: 8,  image: `${B}images/evento_n10.jpg`, alt: 'Backdrop boho con flores tropicales naranjas, rojas y verdes' },
-  { id: 9,  image: `${B}images/evento_n18.jpg`, alt: 'Primer beso de bodas bajo arco floral con rosas rosas' },
-  { id: 10, image: `${B}images/evento_n19.jpg`, alt: 'Mesa de honor de bodas con arreglo verde y blanco' },
-  { id: 11, image: `${B}images/evento_n17.jpg`, alt: 'Runner de girasoles y flores amarillas para cena corporativa' },
-  { id: 12, image: `${B}images/evento_n06.jpg`, alt: 'Runner floral con rosas y jarras de vidrio en mesa exterior' },
-  { id: 13, image: `${B}images/evento_n11.jpg`, alt: 'Instalación Bride to Be con tela drapeada y detalles florales' },
-  { id: 14, image: `${B}images/evento_n02.jpg`, alt: 'Centros de mesa con rosas frescas en jarras de vidrio, vista al mar' },
-  { id: 15, image: `${B}images/evento_n05.jpg`, alt: 'Ramo nupcial boho con pampas grass y flores blancas' },
-  { id: 16, image: `${B}images/evento_n13.jpg`, alt: 'Ramo nupcial con anturios rosados, rosas rojas y limonium' },
-  { id: 17, image: `${B}images/evento_n23.jpg`, alt: 'Mesa de cena íntima con flores verdes y blancas, cubiertos dorados' },
-  { id: 18, image: `${B}images/evento_n15.jpg`, alt: 'Novia con ramo de anturios blancos y azul rey' },
-  { id: 19, image: `${B}images/evento_n12.jpg`, alt: 'Centro de mesa tropical con frutas exóticas y flores silvestres' },
-  { id: 20, image: `${B}images/evento_n21.jpg`, alt: 'Boutonnière clásico de rosas blancas' },
-  { id: 21, image: `${B}images/evento_n16.jpg`, alt: 'Boutonnière de anturio azul sobre traje negro' },
-  { id: 22, image: `${B}images/evento_n07.jpg`, alt: 'Mesa de jardín decorada con flores para evento al aire libre' },
-  { id: 23, image: `${B}images/evento_n09.jpg`, alt: 'Equipo Magenta en montaje de evento decorativo' },
-  { id: 24, image: `${B}images/evento_n24.jpg`, alt: 'Decoración floral para evento especial' },
-  { id: 25, image: `${B}images/evento_n25.jpg`, alt: 'Decoración floral para evento especial' },
-  { id: 26, image: `${B}images/evento_n27.jpg`, alt: 'Decoración floral para evento especial' },
-  { id: 27, image: `${B}images/evento_n28.jpg`, alt: 'Decoración floral para evento especial' },
-  { id: 28, image: `${B}images/evento_n29.jpg`, alt: 'Decoración floral para evento especial' },
-  { id: 29, image: `${B}images/evento_n30.jpg`, alt: 'Decoración floral para evento especial' },
-  { id: 30, image: `${B}images/evento_n20.jpg`, alt: 'Montaje floral para evento de lujo' },
+  { id: 1,  image: `${B}images/mini/evento_n01.webp`, ratio: '768 / 778', alt: 'Mesa de banquete estilo boho al atardecer en la playa' },
+  { id: 2,  image: `${B}images/mini/evento_n03.webp`, ratio: '800 / 1067', alt: 'Decoración de mesa larga con camino fucsia en terraza frente al mar' },
+  { id: 3,  image: `${B}images/mini/evento_n14.webp`, ratio: '800 / 801', alt: 'Altar ceremonial iluminado con flores naranjas y rojas en la playa' },
+  { id: 4,  image: `${B}images/mini/evento_n26.webp`, ratio: '800 / 893', alt: 'Arco circular boho con pampas grass junto a alberca' },
+  { id: 5,  image: `${B}images/mini/evento_n22.webp`, ratio: '800 / 636', alt: 'Montaje de cena nocturna con cenefas de macramé y vegetación' },
+  { id: 6,  image: `${B}images/mini/evento_n08.webp`, ratio: '560 / 1020', alt: 'Runner floral multicolor con rosas amarillas y rosas en jardín' },
+  { id: 7,  image: `${B}images/mini/evento_n04.webp`, ratio: '800 / 1422', alt: 'Mesa larga con floreros de vidrio y rosas rosas en rooftop' },
+  { id: 8,  image: `${B}images/mini/evento_n10.webp`, ratio: '800 / 799', alt: 'Backdrop boho con flores tropicales naranjas, rojas y verdes' },
+  { id: 9,  image: `${B}images/mini/evento_n18.webp`, ratio: '720 / 480', alt: 'Primer beso de bodas bajo arco floral con rosas rosas' },
+  { id: 10, image: `${B}images/mini/evento_n19.webp`, ratio: '800 / 507', alt: 'Mesa de honor de bodas con arreglo verde y blanco' },
+  { id: 11, image: `${B}images/mini/evento_n17.webp`, ratio: '800 / 927', alt: 'Runner de girasoles y flores amarillas para cena corporativa' },
+  { id: 12, image: `${B}images/mini/evento_n06.webp`, ratio: '800 / 1422', alt: 'Runner floral con rosas y jarras de vidrio en mesa exterior' },
+  { id: 13, image: `${B}images/mini/evento_n11.webp`, ratio: '800 / 800', alt: 'Instalación Bride to Be con tela drapeada y detalles florales' },
+  { id: 14, image: `${B}images/mini/evento_n02.webp`, ratio: '800 / 1422', alt: 'Centros de mesa con rosas frescas en jarras de vidrio, vista al mar' },
+  { id: 15, image: `${B}images/mini/evento_n05.webp`, ratio: '800 / 1422', alt: 'Ramo nupcial boho con pampas grass y flores blancas' },
+  { id: 16, image: `${B}images/mini/evento_n13.webp`, ratio: '800 / 1422', alt: 'Ramo nupcial con anturios rosados, rosas rojas y limonium' },
+  { id: 17, image: `${B}images/mini/evento_n23.webp`, ratio: '800 / 800', alt: 'Mesa de cena íntima con flores verdes y blancas, cubiertos dorados' },
+  { id: 18, image: `${B}images/mini/evento_n15.webp`, ratio: '800 / 800', alt: 'Novia con ramo de anturios blancos y azul rey' },
+  { id: 19, image: `${B}images/mini/evento_n12.webp`, ratio: '800 / 1000', alt: 'Centro de mesa tropical con frutas exóticas y flores silvestres' },
+  { id: 20, image: `${B}images/mini/evento_n21.webp`, ratio: '682 / 1024', alt: 'Boutonnière clásico de rosas blancas' },
+  { id: 21, image: `${B}images/mini/evento_n16.webp`, ratio: '800 / 927', alt: 'Boutonnière de anturio azul sobre traje negro' },
+  { id: 22, image: `${B}images/mini/evento_n07.webp`, ratio: '800 / 800', alt: 'Mesa de jardín decorada con flores para evento al aire libre' },
+  { id: 23, image: `${B}images/mini/evento_n09.webp`, ratio: '800 / 800', alt: 'Equipo Magenta en montaje de evento decorativo' },
+  { id: 24, image: `${B}images/mini/evento_n24.webp`, ratio: '800 / 600', alt: 'Decoración floral para evento especial' },
+  { id: 25, image: `${B}images/mini/evento_n25.webp`, ratio: '800 / 534', alt: 'Decoración floral para evento especial' },
+  { id: 26, image: `${B}images/mini/evento_n27.webp`, ratio: '768 / 778', alt: 'Decoración floral para evento especial' },
+  { id: 27, image: `${B}images/mini/evento_n28.webp`, ratio: '800 / 1067', alt: 'Decoración floral para evento especial' },
+  { id: 28, image: `${B}images/mini/evento_n29.webp`, ratio: '800 / 1067', alt: 'Decoración floral para evento especial' },
+  { id: 29, image: `${B}images/mini/evento_n30.webp`, ratio: '800 / 800', alt: 'Decoración floral para evento especial' },
+  { id: 30, image: `${B}images/mini/evento_n20.webp`, ratio: '800 / 800', alt: 'Montaje floral para evento de lujo' },
 ]
 
 export const WA_NUM = '526564442305'

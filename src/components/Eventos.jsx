@@ -1,25 +1,14 @@
 import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { EVENTOS_GALLERY, WA_NUM } from '../data/content'
+import Foto from './Foto'
 
-function GalleryItem({ item, index }) {
-  const ref = useRef(null)
-  const inView = useInView(ref, { once: true, margin: '200px' })
-
+function GalleryItem({ item }) {
   return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 30 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.5, delay: index * 0.04, ease: [0.16, 1, 0.3, 1] }}
-      className="break-inside-avoid overflow-hidden mb-4 lg:mb-6"
-    >
-      <img
-        src={item.image}
-        alt={item.alt}
-        className="w-full object-cover hover:scale-[1.03] transition-transform duration-700 ease-out"
-      />
-    </motion.div>
+    <div className="break-inside-avoid mb-4 lg:mb-6 group">
+      <Foto src={item.image} alt={item.alt} ratio={item.ratio}
+        imgClassName="group-hover:scale-[1.03] transition-transform duration-700" />
+    </div>
   )
 }
 
@@ -70,7 +59,7 @@ export default function Eventos() {
         {/* Masonry gallery */}
         <div className="columns-2 md:columns-3 gap-4 lg:gap-6">
           {EVENTOS_GALLERY.map((item, i) => (
-            <GalleryItem key={item.id} item={item} index={i} />
+            <GalleryItem key={item.id} item={item} />
           ))}
         </div>
 

@@ -2,6 +2,8 @@ import { useState, useRef, useMemo, useCallback } from 'react'
 import { motion, useInView, AnimatePresence } from 'framer-motion'
 import { CATALOG_ARREGLOS, CATALOG_RAMOS, WA_NUM } from '../data/content'
 import PedidoForm from './PedidoForm'
+import FlorIcon from './FlorIcon'
+import Foto from './Foto'
 
 const TABS = [
   { key: 'all', label: 'Todos' },
@@ -17,12 +19,36 @@ const PROD_BASE = 'https://veronafloreria.online'
 const FLORES = (() => {
   const n = {}
   ALL.forEach((it) => it.flores.forEach((f) => { n[f] = (n[f] || 0) + 1 }))
-  return Object.keys(n).sort((a, b) => n[b] - n[a] || a.localeCompare(b))
+  return Object.keys(n).sort((a, b) => n[b] - n[a] || a.localeCompare(b)).map((f) => ({ flor: f, fotos: n[f] }))
 })()
+
+// Otras formas en que la gente escribe cada flor (para el buscador)
+const OTROS_NOMBRES = {
+  Rosas: ['rosa', 'roses', 'rose'],
+  Gerberas: ['gerbera', 'gerberas'],
+  Girasoles: ['girasol', 'sunflower'],
+  Lilis: ['lili', 'lily', 'lilium', 'lirio', 'azucena'],
+  Tulipanes: ['tulipan', 'tulip'],
+  Margaritas: ['margarita', 'daisy'],
+  Alstroemerias: ['alstroemeria', 'astromelia', 'alstromelia', 'astromeria'],
+  Crisantemos: ['crisantemo', 'pompon', 'pompón'],
+  Claveles: ['clavel', 'carnation'],
+  Nube: ['nube', 'gypsophila', 'gipsofila', 'aliento de bebe', 'paniculata', 'baby breath'],
+  Perritos: ['perrito', 'snapdragon', 'boca de dragon', 'antirrhinum'],
+  Anturios: ['anturio', 'anthurium'],
+}
+const norm = (t) => t.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim()
+const coincide = (flor, q) => {
+  if (!q) return true
+  return [flor, ...(OTROS_NOMBRES[flor] || [])].some((n) => {
+    const x = norm(n)
+    return x.includes(q) || q.includes(x)
+  })
+}
 
 function CatalogCard({ item, index, onPedir }) {
   const ref = useRef(null)
-  const inView = useInView(ref, { once: true, margin: '-40px' })
+  const inView = useInView(ref, { once: true, margin: '300px 0px' })
   const label = item.tipo === 'arreglo' ? 'arreglo' : 'ramo'
 
   return (
@@ -30,7 +56,7 @@ function CatalogCard({ item, index, onPedir }) {
       ref={ref}
       initial={{ opacity: 0, y: 28 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.6, delay: (index % 8) * 0.055, ease: [0.16, 1, 0.3, 1] }}
+      transition={{ duration: 0.5, delay: (index % 4) * 0.05, ease: [0.16, 1, 0.3, 1] }}
       className="group relative overflow-hidden bg-pearl"
       style={{ aspectRatio: '1 / 1' }}
     >
@@ -40,11 +66,11 @@ function CatalogCard({ item, index, onPedir }) {
         className="block w-full h-full text-left"
         aria-label={`Pedir este ${label}: ${item.flores.join(', ')}`}
       >
-        <img
+        <Foto
           src={item.image}
           alt={`${item.tipo === 'arreglo' ? 'Arreglo' : 'Ramo'} con ${item.flores.join(', ').toLowerCase()}`}
-          loading="lazy"
-          className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.06]"
+          className="w-full h-full"
+          imgClassName="group-hover:scale-[1.06]"
         />
         <span className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-charcoal/70 to-transparent px-3 pt-8 pb-2.5 flex items-end justify-between gap-2">
           <span className="font-sans text-[11px] text-white/90 leading-tight">{item.flores.join(' · ')}</span>
@@ -60,6 +86,23 @@ function CatalogCard({ item, index, onPedir }) {
 export default function Catalogo() {
   const [tab, setTab] = useState('all')
   const [flor, setFlor] = useState('')
+  const [busca, setBusca] = useState('')
+  const pickerRef = useRef(null)
+  const gridRef = useRef(null)
+  const q = norm(busca)
+  const visibles = FLORES.filter((f) => coincide(f.flor, q))
+  const elegir = (f) => {
+    setFlor(f)
+    setBusca('')
+    if (f) requestAnimationFrame(() => {
+      const y = gridRef.current.getBoundingClientRect().top + window.scrollY - 190
+      window.scrollTo({ top: y, behavior: 'smooth' })
+    })
+  }
+  const verPicker = () => {
+    const y = pickerRef.current.getBoundingClientRect().top + window.scrollY - 110
+    window.scrollTo({ top: y, behavior: 'smooth' })
+  }
   const [pedido, setPedido] = useState(null)
   const headerRef = useRef(null)
   const inView = useInView(headerRef, { once: true, margin: '-80px' })
@@ -114,50 +157,96 @@ export default function Catalogo() {
           </motion.p>
         </div>
 
-        {/* Filtros: se quedan pegados arriba mientras recorren las fotos */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5, delay: 0.5 }}
-          className="sticky top-24 z-30 bg-pearl-dark -mx-6 px-6 lg:-mx-12 lg:px-12 pt-3 pb-3 mb-6 border-b border-charcoal/10"
-        >
-          <div className="flex items-center justify-between gap-3 mb-3">
-            <div role="group" aria-label="Tipo" className="flex border border-charcoal/15">
-              {TABS.map((t) => (
-                <button
-                  key={t.key}
-                  onClick={() => setTab(t.key)}
-                  aria-pressed={tab === t.key}
-                  className={`px-3 sm:px-5 py-2 text-[12px] font-sans font-medium transition-colors duration-200 ${
-                    tab === t.key ? 'bg-petal text-white' : 'text-stone-600 hover:text-charcoal'
-                  }`}
-                >
-                  {t.label}
-                </button>
-              ))}
-            </div>
-            <span className="font-sans text-[12px] text-stone-500 flex-none">{items.length} {items.length === 1 ? 'diseño' : 'diseños'}</span>
+        {/* ¿Qué flor buscas? Dibujo de cada flor + buscador */}
+        <div ref={pickerRef} className="mb-10 bg-pearl border border-charcoal/10 p-4 sm:p-6">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+            <h3 className="font-serif text-2xl text-charcoal">¿Qué flor buscas?</h3>
+            <label className="relative sm:w-80">
+              <span className="sr-only">Buscar una flor</span>
+              <svg className="absolute left-3 top-1/2 -translate-y-1/2 text-stone-400" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                <circle cx="11" cy="11" r="7" /><path d="M20 20l-3.5-3.5" strokeLinecap="round" />
+              </svg>
+              <input
+                type="search"
+                value={busca}
+                onChange={(e) => setBusca(e.target.value)}
+                onKeyDown={(e) => { if (e.key === 'Enter' && visibles[0]) { e.preventDefault(); elegir(visibles[0].flor) } }}
+                placeholder="Escribe una flor: rosa, girasol…"
+                className="w-full bg-white border border-charcoal/15 pl-10 pr-3 py-2.5 text-[16px] font-sans text-charcoal focus:outline-none focus:border-petal"
+              />
+            </label>
           </div>
-          <div role="group" aria-label="Buscar por flor" className="flex gap-2 overflow-x-auto -mx-6 px-6 lg:mx-0 lg:px-0 lg:flex-wrap" style={{ scrollbarWidth: 'none' }}>
-            <span id="buscar-flor" className="flex-none self-center font-sans text-[12px] text-stone-500 pr-1">Flor:</span>
-            {['', ...FLORES].map((f) => (
+
+          <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-7 gap-2">
+            {!q && (
               <button
-                key={f || 'todas'}
-                onClick={() => setFlor(f)}
-                aria-pressed={flor === f}
-                className={`flex-none px-3.5 py-1.5 text-[12px] font-sans transition-colors duration-200 border ${
-                  flor === f
-                    ? 'bg-charcoal text-white border-charcoal'
-                    : 'bg-pearl text-charcoal border-charcoal/15 hover:border-petal/60'
+                onClick={() => elegir('')}
+                aria-pressed={!flor}
+                className={`flex flex-col items-center gap-1 py-3 px-1 border transition-colors duration-150 ${
+                  !flor ? 'border-petal bg-petal-light' : 'border-charcoal/10 bg-white hover:border-petal/50'
                 }`}
               >
-                {f || 'Todas'}
+                <span className="flex -space-x-5">
+                  <FlorIcon flor="Rosas" size={48} /><FlorIcon flor="Girasoles" size={48} /><FlorIcon flor="Lilis" size={48} />
+                </span>
+                <span className="font-sans text-[13px] font-medium text-charcoal">Todas</span>
+                <span className="font-sans text-[11px] text-stone-500">{ALL.length} fotos</span>
+              </button>
+            )}
+            {visibles.map(({ flor: f, fotos }) => (
+              <button
+                key={f}
+                onClick={() => elegir(flor === f ? '' : f)}
+                aria-pressed={flor === f}
+                className={`group/flor flex flex-col items-center gap-1 py-3 px-1 border transition-colors duration-150 ${
+                  flor === f ? 'border-petal bg-petal-light' : 'border-charcoal/10 bg-white hover:border-petal/50'
+                }`}
+              >
+                <FlorIcon flor={f} size={60} className="transition-transform duration-300 group-hover/flor:-rotate-6 group-hover/flor:scale-110" />
+                <span className="font-sans text-[13px] font-medium text-charcoal">{f}</span>
+                <span className="font-sans text-[11px] text-stone-500">{fotos} {fotos === 1 ? 'foto' : 'fotos'}</span>
               </button>
             ))}
           </div>
-        </motion.div>
+          {q && !visibles.length && (
+            <p className="font-sans text-sm text-stone-500 mt-4">
+              No tenemos fotos con "{busca.trim()}", pero te lo podemos armar.{' '}
+              <a href={`https://wa.me/${WA_NUM}?text=${encodeURIComponent(`Hola Magenta, ¿me pueden hacer un arreglo con ${busca.trim()}?`)}`}
+                target="_blank" rel="noopener noreferrer" className="text-petal underline underline-offset-2">Pregúntanos por WhatsApp</a>
+            </p>
+          )}
+        </div>
+
+        {/* Barra fija mientras recorren las fotos: tipo, flor elegida y cuántas hay */}
+        <div className="sticky top-24 z-30 bg-pearl-dark -mx-6 px-6 lg:-mx-12 lg:px-12 py-3 mb-6 border-b border-charcoal/10 flex flex-wrap items-center gap-x-4 gap-y-2">
+          <div role="group" aria-label="Tipo" className="flex border border-charcoal/15">
+            {TABS.map((t) => (
+              <button
+                key={t.key}
+                onClick={() => setTab(t.key)}
+                aria-pressed={tab === t.key}
+                className={`px-3 sm:px-5 py-2 text-[12px] font-sans font-medium transition-colors duration-200 ${
+                  tab === t.key ? 'bg-petal text-white' : 'text-stone-600 hover:text-charcoal'
+                }`}
+              >
+                {t.label}
+              </button>
+            ))}
+          </div>
+          {flor ? (
+            <button onClick={() => setFlor('')} className="flex items-center gap-1.5 pl-1 pr-3 py-1 bg-white border border-petal text-[12px] font-sans text-charcoal" aria-label={`Quitar filtro ${flor}`}>
+              <FlorIcon flor={flor} size={26} /> {flor} <span className="text-stone-400 text-base leading-none ml-1">×</span>
+            </button>
+          ) : (
+            <button onClick={verPicker} className="flex items-center gap-1.5 text-[12px] font-sans text-petal underline underline-offset-4">
+              Elegir flor
+            </button>
+          )}
+          <span className="ml-auto font-sans text-[12px] text-stone-500">{items.length} {items.length === 1 ? 'diseño' : 'diseños'}</span>
+        </div>
 
         {/* Photo grid */}
+        <div ref={gridRef} />
         <AnimatePresence mode="wait">
           <motion.div
             key={tab + flor}
