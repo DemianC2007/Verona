@@ -38,7 +38,7 @@ export default function Hero() {
         </motion.h1>
 
         <motion.p {...fadeUp(0.55)} className="font-sans text-stone-500 text-base leading-relaxed max-w-sm mb-10">
-          En Verona unimos dos mundos: la <strong className="font-medium text-charcoal">Academia</strong> donde
+          En Magenta unimos dos mundos: la <strong className="font-medium text-charcoal">Academia</strong> donde
           transmitimos el arte floral, y el{' '}
           <strong className="font-medium text-charcoal">Estudio</strong> donde cada arreglo nace desde la
           pasión y la técnica.
@@ -46,7 +46,7 @@ export default function Hero() {
 
         <motion.div {...fadeUp(0.68)} className="flex flex-col sm:flex-row gap-3 mb-14">
           <a
-            href={`https://wa.me/${WA_NUM}?text=${encodeURIComponent('Hola Verona! Me gustaría más información sobre sus cursos y arreglos.')}`}
+            href={`https://wa.me/${WA_NUM}?text=${encodeURIComponent('Hola Magenta! Me gustaría más información sobre sus cursos y arreglos.')}`}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-petal text-white font-sans text-sm font-medium tracking-wide hover:bg-petal-dark transition-colors duration-200"
@@ -87,7 +87,7 @@ export default function Hero() {
       >
         <img
           src={IMAGES.hero}
-          alt="Florista de Verona sosteniendo un arreglo de autor"
+          alt="Florista de Magenta sosteniendo un arreglo de autor"
           className="w-full h-full object-cover object-center"
         />
         {/* Subtle left-fade to blend with the white text column on desktop */}
@@ -102,7 +102,7 @@ export default function Hero() {
         >
           <div className="font-serif text-sm text-charcoal italic">Arte floral de autor</div>
           <div className="text-[10px] font-sans text-stone-400 tracking-widest uppercase mt-0.5">
-            Verona Studio
+            Magenta
           </div>
         </motion.div>
       </motion.div>

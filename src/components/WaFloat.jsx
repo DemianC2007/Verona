@@ -3,7 +3,7 @@ import { WA_NUM } from '../data/content'
 
 export default function WaFloat() {
   const msg = encodeURIComponent(
-    'Hola Verona, me gustaría obtener más información sobre sus cursos y arreglos.'
+    'Hola Magenta, me gustaría obtener más información sobre sus cursos y arreglos.'
   )
 
   return (

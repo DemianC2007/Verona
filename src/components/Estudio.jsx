@@ -1,13 +1,11 @@
-import { useRef } from 'react'
+import { useRef, useState, useCallback } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { ARRANGEMENTS, WA_NUM } from '../data/content'
+import PedidoForm from './PedidoForm'
 
-function ProductCard({ product, index }) {
+function ProductCard({ product, index, onPedir }) {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-60px' })
-  const waMsg = encodeURIComponent(
-    `Hola Verona, me interesa el arreglo "${product.name}" (${product.price}). ¿Está disponible?`
-  )
 
   return (
     <motion.article
@@ -26,14 +24,13 @@ function ProductCard({ product, index }) {
         />
         {/* Hover overlay with CTA */}
         <motion.div className="absolute inset-0 bg-charcoal/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <a
-            href={`https://wa.me/${WA_NUM}?text=${waMsg}`}
-            target="_blank"
-            rel="noopener noreferrer"
+          <button
+            type="button"
+            onClick={() => onPedir(product)}
             className="px-6 py-2.5 bg-pearl text-charcoal text-[13px] font-sans font-medium tracking-wide hover:bg-petal hover:text-white transition-colors duration-200"
           >
-            Pedir por WhatsApp
-          </a>
+            Pedir
+          </button>
         </motion.div>
       </div>
 
@@ -43,14 +40,13 @@ function ProductCard({ product, index }) {
         <p className="font-sans text-stone-500 text-sm leading-relaxed mb-3">{product.description}</p>
         <div className="flex items-center justify-between">
           <span className="font-serif text-xl text-charcoal">{product.price}</span>
-          <a
-            href={`https://wa.me/${WA_NUM}?text=${waMsg}`}
-            target="_blank"
-            rel="noopener noreferrer"
+          <button
+            type="button"
+            onClick={() => onPedir(product)}
             className="text-petal text-sm font-sans font-medium hover:underline underline-offset-2"
           >
-            Ordenar →
-          </a>
+            Ordenar
+          </button>
         </div>
       </div>
     </motion.article>
@@ -60,7 +56,12 @@ function ProductCard({ product, index }) {
 export default function Estudio() {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-80px' })
-  const catalogMsg = encodeURIComponent('Hola Verona, me gustaría conocer más arreglos disponibles.')
+  const catalogMsg = encodeURIComponent('Hola Magenta, me gustaría conocer más arreglos disponibles.')
+  const [pedido, setPedido] = useState(null)
+  const cerrar = useCallback(() => setPedido(null), [])
+  const pedir = useCallback((p) => setPedido({
+    etiqueta: 'arreglo', seccion: 'estudio', imagen: p.image, detalle: `"${p.name}" (${p.price})`,
+  }), [])
 
   return (
     <section id="estudio" className="py-24 lg:py-32 bg-pearl">
@@ -87,7 +88,7 @@ export default function Estudio() {
             initial={{ scaleX: 0 }}
             animate={inView ? { scaleX: 1 } : {}}
             transition={{ duration: 0.55, delay: 0.3 }}
-            className="mt-5 h-px w-16 bg-coral origin-left"
+            className="mt-5 h-px w-16 bg-petal origin-left"
           />
           <motion.p
             initial={{ opacity: 0, y: 10 }}
@@ -103,7 +104,7 @@ export default function Estudio() {
         {/* Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10">
           {ARRANGEMENTS.map((product, i) => (
-            <ProductCard key={product.id} product={product} index={i} />
+            <ProductCard key={product.id} product={product} index={i} onPedir={pedir} />
           ))}
         </div>
 
@@ -128,6 +129,7 @@ export default function Estudio() {
           </a>
         </motion.div>
       </div>
+      <PedidoForm pedido={pedido} onClose={cerrar} />
     </section>
   )
 }

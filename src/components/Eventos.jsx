@@ -26,7 +26,7 @@ function GalleryItem({ item, index }) {
 export default function Eventos() {
   const headerRef = useRef(null)
   const inView = useInView(headerRef, { once: true, margin: '-80px' })
-  const waMsg = encodeURIComponent('Hola Verona! Me gustaría cotizar decoración floral para un evento. ¿Tienen disponibilidad?')
+  const waMsg = encodeURIComponent('Hola Magenta! Me gustaría cotizar decoración floral para un evento. ¿Tienen disponibilidad?')
 
   return (
     <section id="eventos" className="py-24 lg:py-32 bg-pearl-dark">

@@ -1,8 +1,8 @@
-# Verona Floral Studio
+# Magenta Diseño Floral
 
 > Academia de arte floral y estudio de diseño boutique en Ciudad Juárez, Chihuahua, México.
 
-Verona Floral Studio combina dos mundos bajo una misma marca: una **Academia** donde enseñamos diseño floral con cursos presenciales desde nivel básico hasta certificación avanzada, y un **Estudio** donde diseñamos y vendemos arreglos florales de autor — piezas únicas que no se repiten.
+Magenta Diseño Floral combina dos mundos bajo una misma marca: una **Academia** donde enseñamos diseño floral con cursos presenciales desde nivel básico hasta certificación avanzada, y un **Estudio** donde diseñamos y vendemos arreglos florales de autor — piezas únicas que no se repiten.
 
 Estamos en Ciudad Juárez, Chihuahua. Nuestro sitio está en español. Ofrecemos entrega de arreglos a domicilio en Ciudad Juárez.
 
@@ -14,7 +14,7 @@ Estamos en Ciudad Juárez, Chihuahua. Nuestro sitio está en español. Ofrecemos
 
 ## Identidad de marca
 
-- Paleta: Coral/Terracota #C96840, Crema #FAF9F6, Carbón #1A1917
+- Paleta: Coral/Terracota #AD1A5B, Crema #FAF9F6, Carbón #1A1917
 - Tipografía: Playfair Display (títulos serif) + Inter (cuerpo sans-serif)
 - Empresa hermana: Florería Magenta (Puebla · 6 sucursales · 47K seguidores Instagram)
 

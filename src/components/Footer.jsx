@@ -11,7 +11,7 @@ const SOCIAL = [
 
 export default function Footer() {
   return (
-    <footer className="bg-pearl border-t border-charcoal/[0.07] pt-16 pb-10">
+    <footer id="contacto" className="bg-pearl border-t border-charcoal/[0.07] pt-16 pb-10">
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
         {/* Top row */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-14">
@@ -19,9 +19,9 @@ export default function Footer() {
           <div>
             <div className="mb-4">
               <img
-                src={`${import.meta.env.BASE_URL}images/logo.jpg`}
-                alt="Verona Floral Studio"
-                className="h-14 w-auto object-contain"
+                src={`${import.meta.env.BASE_URL}images/magenta-logo.png`}
+                alt="Magenta Diseño Floral y Eventos"
+                className="h-24 w-auto object-contain"
               />
             </div>
             <p className="font-sans text-stone-500 text-sm leading-relaxed max-w-[220px]">
@@ -54,8 +54,8 @@ export default function Footer() {
               Encuéntranos
             </h4>
             <div className="space-y-2 mb-6">
-              <p className="font-sans text-sm text-stone-500">magenta.jrz@gmail.com</p>
-              <p className="font-sans text-sm text-stone-500">+52 656 444 2305</p>
+              <p><a href="mailto:magenta.jrz@gmail.com" className="font-sans text-sm text-stone-500 hover:text-charcoal">magenta.jrz@gmail.com</a></p>
+              <p><a href="https://wa.me/526564442305" target="_blank" rel="noopener noreferrer" className="font-sans text-sm text-stone-500 hover:text-charcoal">WhatsApp +52 656 444 2305</a></p>
               <p className="font-sans text-sm text-stone-500">Ciudad Juárez, Chihuahua</p>
             </div>
             <div className="flex gap-5">
@@ -75,7 +75,7 @@ export default function Footer() {
         {/* Bottom row */}
         <div className="pt-8 border-t border-charcoal/[0.07] flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="font-sans text-xs text-stone-400">
-            © {new Date().getFullYear()} Verona Academia Floral. Todos los derechos reservados.
+            © {new Date().getFullYear()} Magenta Diseño Floral y Eventos. Todos los derechos reservados.
           </p>
           <p className="font-sans text-xs text-stone-300">
             Sitio web por{' '}

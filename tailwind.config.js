@@ -8,10 +8,11 @@ export default {
         sans: ['Inter', 'system-ui', 'sans-serif'],
       },
       colors: {
+        // Magenta del logo (antes rosa palo #B8929A de Verona)
         petal: {
-          DEFAULT: '#B8929A',
-          light: '#F5EBED',
-          dark: '#96727A',
+          DEFAULT: '#AD1A5B',
+          light: '#F7E6EC',
+          dark: '#8A1448',
         },
         pearl: {
           DEFAULT: '#FDFCF9',

@@ -76,7 +76,7 @@ export default function Esencia() {
             transition={{ duration: 0.6, delay: 0.5 }}
             className="font-sans text-stone-500 text-base leading-relaxed mb-4"
           >
-            En Verona creemos que cada flor tiene una historia que contar. Nuestro trabajo no es solo
+            En Magenta creemos que cada flor tiene una historia que contar. Nuestro trabajo no es solo
             arreglar flores: es capturar un momento, traducir una emoción y entregarla de forma
             tangible, efímera y hermosa.
           </motion.p>

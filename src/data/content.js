@@ -76,17 +76,56 @@ export const ARRANGEMENTS = [
   },
 ]
 
-export const CATALOG_ARREGLOS = Array.from({ length: 16 }, (_, i) => ({
-  id: `arreglo_${String(i + 1).padStart(2, '0')}`,
-  tipo: 'arreglo',
-  image: `${B}images/arreglo_${String(i + 1).padStart(2, '0')}.jpg`,
-}))
+// Flores que se ven en cada foto del catálogo (para el buscador por flor).
+// Para corregir una foto, cambia su lista; las flores del buscador salen de aquí solas.
+const FLORES_ARREGLOS = [
+  ['Rosas'],                                  // 01
+  ['Lilis'],                                  // 02
+  ['Crisantemos', 'Gerberas'],                // 03
+  ['Rosas', 'Perritos'],                      // 04
+  ['Rosas', 'Margaritas', 'Alstroemerias'],   // 05
+  ['Lilis', 'Rosas'],                         // 06
+  ['Gerberas', 'Rosas', 'Margaritas'],        // 07
+  ['Rosas', 'Alstroemerias'],                 // 08
+  ['Rosas', 'Alstroemerias'],                 // 09
+  ['Girasoles', 'Rosas', 'Claveles'],         // 10
+  ['Rosas'],                                  // 11
+  ['Crisantemos', 'Rosas'],                   // 12
+  ['Tulipanes'],                              // 13
+  ['Rosas', 'Gerberas'],                      // 14
+  ['Crisantemos', 'Rosas'],                   // 15
+  ['Girasoles', 'Rosas'],                     // 16
+]
 
-export const CATALOG_RAMOS = Array.from({ length: 19 }, (_, i) => ({
-  id: `ramo_${String(i + 1).padStart(2, '0')}`,
-  tipo: 'ramo',
-  image: `${B}images/ramo_${String(i + 1).padStart(2, '0')}.jpg`,
-}))
+const FLORES_RAMOS = [
+  ['Gerberas', 'Rosas'],                      // 01
+  ['Lilis'],                                  // 02
+  ['Gerberas', 'Rosas', 'Anturios'],          // 03
+  ['Girasoles', 'Gerberas'],                  // 04
+  ['Girasoles', 'Gerberas'],                  // 05
+  ['Rosas'],                                  // 06
+  ['Rosas'],                                  // 07
+  ['Rosas', 'Nube'],                          // 08
+  ['Rosas', 'Perritos', 'Alstroemerias'],     // 09
+  ['Rosas'],                                  // 10
+  ['Rosas', 'Nube'],                          // 11
+  ['Rosas', 'Alstroemerias'],                 // 12
+  ['Girasoles', 'Gerberas', 'Rosas'],         // 13
+  ['Gerberas', 'Lilis'],                      // 14
+  ['Girasoles', 'Margaritas'],                // 15
+  ['Gerberas'],                               // 16
+  ['Lilis', 'Gerberas', 'Rosas'],             // 17
+  ['Rosas', 'Alstroemerias'],                 // 18
+  ['Gerberas', 'Nube'],                       // 19
+]
+
+const catalogo = (tipo, flores) => flores.map((f, i) => {
+  const id = `${tipo}_${String(i + 1).padStart(2, '0')}`
+  return { id, tipo, flores: f, image: `${B}images/${id}.jpg` }
+})
+
+export const CATALOG_ARREGLOS = catalogo('arreglo', FLORES_ARREGLOS)
+export const CATALOG_RAMOS = catalogo('ramo', FLORES_RAMOS)
 
 export const EVENTOS_GALLERY = [
   { id: 1,  image: `${B}images/evento_n01.jpg`, alt: 'Mesa de banquete estilo boho al atardecer en la playa' },
@@ -111,7 +150,7 @@ export const EVENTOS_GALLERY = [
   { id: 20, image: `${B}images/evento_n21.jpg`, alt: 'Boutonnière clásico de rosas blancas' },
   { id: 21, image: `${B}images/evento_n16.jpg`, alt: 'Boutonnière de anturio azul sobre traje negro' },
   { id: 22, image: `${B}images/evento_n07.jpg`, alt: 'Mesa de jardín decorada con flores para evento al aire libre' },
-  { id: 23, image: `${B}images/evento_n09.jpg`, alt: 'Equipo Verona en montaje de evento decorativo' },
+  { id: 23, image: `${B}images/evento_n09.jpg`, alt: 'Equipo Magenta en montaje de evento decorativo' },
   { id: 24, image: `${B}images/evento_n24.jpg`, alt: 'Decoración floral para evento especial' },
   { id: 25, image: `${B}images/evento_n25.jpg`, alt: 'Decoración floral para evento especial' },
   { id: 26, image: `${B}images/evento_n27.jpg`, alt: 'Decoración floral para evento especial' },

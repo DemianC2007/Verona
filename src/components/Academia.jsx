@@ -41,7 +41,7 @@ function SectionHeader({ inView }) {
 }
 
 function waLink(courseTitle) {
-  const msg = encodeURIComponent(`Hola Verona! Me interesa el curso "${courseTitle}". ¿Cuándo hay disponibilidad?`)
+  const msg = encodeURIComponent(`Hola Magenta! Me interesa el curso "${courseTitle}". ¿Cuándo hay disponibilidad?`)
   return `https://wa.me/${WA_NUM}?text=${msg}`
 }
 

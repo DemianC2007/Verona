@@ -1,6 +1,7 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useMemo, useCallback } from 'react'
 import { motion, useInView, AnimatePresence } from 'framer-motion'
 import { CATALOG_ARREGLOS, CATALOG_RAMOS, WA_NUM } from '../data/content'
+import PedidoForm from './PedidoForm'
 
 const TABS = [
   { key: 'all', label: 'Todos' },
@@ -12,14 +13,17 @@ const ALL = [...CATALOG_ARREGLOS, ...CATALOG_RAMOS]
 
 const PROD_BASE = 'https://veronafloreria.online'
 
-function CatalogCard({ item, index }) {
+// Flores del buscador, de la más común a la menos común
+const FLORES = (() => {
+  const n = {}
+  ALL.forEach((it) => it.flores.forEach((f) => { n[f] = (n[f] || 0) + 1 }))
+  return Object.keys(n).sort((a, b) => n[b] - n[a] || a.localeCompare(b))
+})()
+
+function CatalogCard({ item, index, onPedir }) {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-40px' })
   const label = item.tipo === 'arreglo' ? 'arreglo' : 'ramo'
-  const imageUrl = `${PROD_BASE}/images/${item.id}.jpg`
-  const waMsg = encodeURIComponent(
-    `Hola Verona, me interesa este ${label} del catálogo:\n${imageUrl}\n\n¿Me puede dar más información y precio?`
-  )
 
   return (
     <motion.div
@@ -30,32 +34,48 @@ function CatalogCard({ item, index }) {
       className="group relative overflow-hidden bg-pearl"
       style={{ aspectRatio: '1 / 1' }}
     >
-      <img
-        src={item.image}
-        alt={item.tipo === 'arreglo' ? 'Arreglo floral' : 'Ramo floral'}
-        className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.06]"
-      />
-      <div className="absolute inset-0 bg-charcoal/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-        <a
-          href={`https://wa.me/${WA_NUM}?text=${waMsg}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="px-5 py-2.5 bg-pearl text-charcoal text-[12px] font-sans font-medium tracking-wide hover:bg-petal hover:text-white transition-colors duration-200"
-        >
-          Pedir por WhatsApp
-        </a>
-      </div>
+      <button
+        type="button"
+        onClick={() => onPedir(item)}
+        className="block w-full h-full text-left"
+        aria-label={`Pedir este ${label}: ${item.flores.join(', ')}`}
+      >
+        <img
+          src={item.image}
+          alt={`${item.tipo === 'arreglo' ? 'Arreglo' : 'Ramo'} con ${item.flores.join(', ').toLowerCase()}`}
+          loading="lazy"
+          className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.06]"
+        />
+        <span className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-charcoal/70 to-transparent px-3 pt-8 pb-2.5 flex items-end justify-between gap-2">
+          <span className="font-sans text-[11px] text-white/90 leading-tight">{item.flores.join(' · ')}</span>
+          <span className="flex-none px-3 py-1.5 bg-pearl text-charcoal text-[11px] font-sans font-medium group-hover:bg-petal group-hover:text-white transition-colors duration-200">
+            Pedir
+          </span>
+        </span>
+      </button>
     </motion.div>
   )
 }
 
 export default function Catalogo() {
   const [tab, setTab] = useState('all')
+  const [flor, setFlor] = useState('')
+  const [pedido, setPedido] = useState(null)
   const headerRef = useRef(null)
   const inView = useInView(headerRef, { once: true, margin: '-80px' })
 
-  const items = tab === 'all' ? ALL : tab === 'arreglo' ? CATALOG_ARREGLOS : CATALOG_RAMOS
-  const waMsg = encodeURIComponent('Hola Verona, me gustaría hacer un pedido del catálogo.')
+  const porTipo = tab === 'all' ? ALL : tab === 'arreglo' ? CATALOG_ARREGLOS : CATALOG_RAMOS
+  const items = useMemo(() => (flor ? porTipo.filter((it) => it.flores.includes(flor)) : porTipo), [porTipo, flor])
+  const waMsg = encodeURIComponent('Hola Magenta, me gustaría hacer un pedido del catálogo.')
+
+  const pedir = useCallback((item) => {
+    const etiqueta = item.tipo === 'arreglo' ? 'arreglo' : 'ramo'
+    setPedido({
+      etiqueta, seccion: 'catalogo', imagen: item.image,
+      detalle: `${PROD_BASE}/images/${item.id}.jpg (${item.flores.join(', ').toLowerCase()})`,
+    })
+  }, [])
+  const cerrar = useCallback(() => setPedido(null), [])
 
   return (
     <section id="catalogo" className="py-24 lg:py-32 bg-pearl-dark">
@@ -90,7 +110,7 @@ export default function Catalogo() {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="mt-5 font-sans text-stone-500 text-base leading-relaxed max-w-xl"
           >
-            Arreglos en caja y jarrón, ramos frescos y bouquets de autor. Haz tu pedido directo por WhatsApp.
+            Arreglos en caja y jarrón, ramos frescos y bouquets de autor. Busca por tu flor favorita y toca el que te guste para pedirlo.
           </motion.p>
         </div>
 
@@ -116,10 +136,36 @@ export default function Catalogo() {
           ))}
         </motion.div>
 
+        {/* Buscar por flor */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.5, delay: 0.55 }}
+          className="mb-10 -mt-4"
+        >
+          <p id="buscar-flor" className="font-sans text-[13px] text-stone-500 mb-3">Buscar por flor</p>
+          <div role="group" aria-labelledby="buscar-flor" className="flex gap-2 overflow-x-auto pb-2 -mx-6 px-6 lg:mx-0 lg:px-0 lg:flex-wrap">
+            {['', ...FLORES].map((f) => (
+              <button
+                key={f || 'todas'}
+                onClick={() => setFlor(f)}
+                aria-pressed={flor === f}
+                className={`flex-none px-4 py-1.5 text-[12px] font-sans transition-colors duration-200 border ${
+                  flor === f
+                    ? 'bg-charcoal text-white border-charcoal'
+                    : 'bg-pearl text-charcoal border-charcoal/15 hover:border-petal/60'
+                }`}
+              >
+                {f || 'Todas las flores'}
+              </button>
+            ))}
+          </div>
+        </motion.div>
+
         {/* Photo grid */}
         <AnimatePresence mode="wait">
           <motion.div
-            key={tab}
+            key={tab + flor}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -127,10 +173,18 @@ export default function Catalogo() {
             className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2.5 lg:gap-3"
           >
             {items.map((item, i) => (
-              <CatalogCard key={item.id} item={item} index={i} />
+              <CatalogCard key={item.id} item={item} index={i} onPedir={pedir} />
             ))}
           </motion.div>
         </AnimatePresence>
+        {!items.length && (
+          <p className="font-sans text-stone-500 text-sm py-10 text-center">
+            No tenemos fotos de {tab === 'arreglo' ? 'arreglos' : 'ramos'} con {flor.toLowerCase()} todavía, pero te lo podemos hacer.{' '}
+            <a href={`https://wa.me/${WA_NUM}?text=${encodeURIComponent(`Hola Magenta, me gustaría un ${tab === 'arreglo' ? 'arreglo' : 'ramo'} con ${flor.toLowerCase()}.`)}`}
+              target="_blank" rel="noopener noreferrer" className="text-petal underline underline-offset-2">Pídelo por WhatsApp</a>
+          </p>
+        )}
+
 
         {/* Bottom CTA */}
         <motion.div
@@ -153,6 +207,7 @@ export default function Catalogo() {
           </a>
         </motion.div>
       </div>
+      <PedidoForm pedido={pedido} onClose={cerrar} />
     </section>
   )
 }

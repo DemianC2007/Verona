@@ -34,9 +34,9 @@ export default function Navbar() {
           {/* Logo */}
           <a href="#inicio" className="flex items-center">
             <img
-              src={`${import.meta.env.BASE_URL}images/logo.jpg`}
-              alt="Verona Floral Studio"
-              className="h-16 w-auto object-contain"
+              src={`${import.meta.env.BASE_URL}images/magenta-wordmark.png`}
+              alt="Magenta Diseño Floral y Eventos"
+              className="h-14 w-auto object-contain"
             />
           </a>
 
