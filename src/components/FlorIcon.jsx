@@ -182,3 +182,67 @@ export default function FlorIcon({ flor, size = 48, className = '' }) {
     </svg>
   )
 }
+
+// Dibujos de cada tipo de arreglo (mismo estilo que las flores), para el selector del catálogo
+const Flor = ({ x, y, r = 3.4, fill }) => (
+  <g>
+    <Corona n={6} cx={x} cy={y} r={r * 0.75} rx={r * 0.55} ry={r * 0.8} fill={fill} stroke={LINEA} />
+    <circle cx={x} cy={y} r={r * 0.4} fill="#F2C12E" />
+  </g>
+)
+
+const TIPOS = {
+  all: () => (
+    <g>
+      <path d="M10 40 h28" stroke={LINEA} strokeWidth="0.8" />
+      <Flor x={14} y={30} fill="#F4A3C0" /><Flor x={24} y={24} r={4} fill="#C8243B" /><Flor x={34} y={30} fill="#F2C12E" />
+      <path d="M14 33 V40 M24 28 V40 M34 33 V40" stroke={TALLO} strokeWidth="1.4" />
+    </g>
+  ),
+  arreglo: () => (
+    <g>
+      <path d="M13 28 h22 l-3 16 h-16 Z" fill="#F7E6EC" stroke={LINEA} strokeWidth="0.9" strokeLinejoin="round" />
+      <path d="M13 31 h22" stroke="#AD1A5B" strokeWidth="1.2" />
+      <path d="M16 28 C 14 22 15 18 18 16 M32 28 C 34 22 33 18 30 16" stroke={TALLO} strokeWidth="1.2" fill="none" />
+      <Flor x={17} y={22} fill="#F4A3C0" /><Flor x={24} y={16} r={4} fill="#C8243B" /><Flor x={31} y={22} fill="#F2C12E" />
+      <Flor x={21} y={26} r={3} fill="#FFFFFF" /><Flor x={28} y={26} r={3} fill="#F4A3C0" />
+    </g>
+  ),
+  ramo: () => (
+    <g>
+      <path d="M12 18 L24 44 L36 18 Z" fill="#F4EEDC" stroke={LINEA} strokeWidth="0.9" strokeLinejoin="round" />
+      <path d="M17 18 L24 40 M31 18 L24 40" stroke="#D6C9A6" strokeWidth="0.8" />
+      <Flor x={17} y={16} fill="#F27BA0" /><Flor x={24} y={11} r={4} fill="#C8243B" /><Flor x={31} y={16} fill="#F2C12E" />
+      <Flor x={21} y={20} r={3} fill="#FFFFFF" /><Flor x={28} y={20} r={3} fill="#F4A3C0" />
+      <path d="M21 34 h6" stroke="#AD1A5B" strokeWidth="2" strokeLinecap="round" />
+    </g>
+  ),
+  novia: () => (
+    <g>
+      <path d="M22 26 L23 44 M26 26 L25 44 M24 26 V44" stroke={TALLO} strokeWidth="1.2" />
+      <Flor x={18} y={20} fill="#FFFFFF" /><Flor x={24} y={15} r={4} fill="#FFFFFF" /><Flor x={30} y={20} fill="#FFFFFF" />
+      <Flor x={21} y={25} r={3} fill="#F7E6EC" /><Flor x={27} y={25} r={3} fill="#FFFFFF" />
+      <path d="M24 32 C 18 28 15 32 18 35 C 20 37 23 34 24 32 Z M24 32 C 30 28 33 32 30 35 C 28 37 25 34 24 32 Z"
+        fill="#FFFFFF" stroke={LINEA} strokeWidth="0.8" />
+      <path d="M23 33 L19 42 M25 33 L29 42" stroke="#C9B8A8" strokeWidth="1.2" strokeLinecap="round" />
+    </g>
+  ),
+  funebre: () => (
+    <g>
+      <path d="M16 46 L22 32 M32 46 L26 32 M24 34 V46" stroke="#8A6A4A" strokeWidth="1.3" strokeLinecap="round" />
+      <ellipse cx="24" cy="20" rx="13" ry="15" fill={HOJA} stroke={TALLO} strokeWidth="0.9" />
+      <Flor x={24} y={10} fill="#FFFFFF" /><Flor x={17} y={16} fill="#F2C12E" /><Flor x={31} y={16} fill="#FFFFFF" />
+      <Flor x={18} y={27} fill="#FFFFFF" /><Flor x={30} y={27} fill="#F2C12E" /><Flor x={24} y={30} r={3} fill="#FFFFFF" />
+      <path d="M11 21 C 18 24 30 24 37 19 L37 23 C 30 28 18 28 11 25 Z" fill="#FFFFFF" stroke={LINEA} strokeWidth="0.7" />
+    </g>
+  ),
+}
+
+export function TipoIcon({ tipo, size = 48, className = '' }) {
+  const Dibujo = TIPOS[tipo] || TIPOS.all
+  return (
+    <svg viewBox="0 0 48 48" width={size} height={size} className={className} aria-hidden="true">
+      <Dibujo />
+    </svg>
+  )
+}

@@ -2,7 +2,7 @@ import { useState, useRef, useMemo, useCallback } from 'react'
 import { motion, useInView, AnimatePresence } from 'framer-motion'
 import { CATALOG_ARREGLOS, CATALOG_RAMOS, CATALOG_FUNEBRES, CATALOG_NOVIAS, WA_NUM } from '../data/content'
 import PedidoForm from './PedidoForm'
-import FlorIcon from './FlorIcon'
+import FlorIcon, { TipoIcon } from './FlorIcon'
 import Foto from './Foto'
 
 const TABS = [
@@ -21,12 +21,22 @@ const PLURAL = { arreglo: 'arreglos', ramo: 'ramos', novia: 'ramos de novia', fu
 
 const PROD_BASE = 'https://magentaflores.store'
 
-// Flores del buscador, de la más común a la menos común
-const FLORES = (() => {
+// Flores de una lista de fotos, de la más común a la menos común
+const contarFlores = (lista) => {
   const n = {}
-  ALL.forEach((it) => it.flores.forEach((f) => { n[f] = (n[f] || 0) + 1 }))
+  lista.forEach((it) => it.flores.forEach((f) => { n[f] = (n[f] || 0) + 1 }))
   return Object.keys(n).sort((a, b) => n[b] - n[a] || a.localeCompare(b)).map((f) => ({ flor: f, fotos: n[f] }))
-})()
+}
+const FLORES_POR_TIPO = Object.fromEntries(Object.entries(POR_TIPO).map(([k, v]) => [k, contarFlores(v)]))
+
+// Palabras con las que la gente busca cada tipo
+const PALABRAS_TIPO = {
+  all: ['todo', 'todos'],
+  arreglo: ['arreglo', 'caja', 'jarron', 'florero', 'centro de mesa', 'regalo'],
+  ramo: ['ramo', 'bouquet', 'buque'],
+  novia: ['novia', 'boda', 'nupcial', 'casamiento', 'bride'],
+  funebre: ['funeral', 'funebre', 'corona', 'condolencia', 'luto', 'velorio', 'pesame', 'difunto'],
+}
 
 // Otras formas en que la gente escribe cada flor (para el buscador)
 const OTROS_NOMBRES = {
@@ -97,7 +107,13 @@ export default function Catalogo() {
   const pickerRef = useRef(null)
   const gridRef = useRef(null)
   const q = norm(busca)
-  const visibles = FLORES.filter((f) => coincide(f.flor, q))
+  const visibles = FLORES_POR_TIPO[tab].filter((f) => coincide(f.flor, q))
+  const tiposVisibles = TABS.filter((t) => !q || q.length < 3 ? true : PALABRAS_TIPO[t.key].some((w) => w.includes(q) || q.includes(w)) || norm(t.label).includes(q))
+  const cambiarTipo = (k) => {
+    setTab(k)
+    setBusca('')
+    if (flor && !FLORES_POR_TIPO[k].some((f) => f.flor === flor)) setFlor('')
+  }
   const elegir = (f) => {
     setFlor(f)
     setBusca('')
@@ -167,7 +183,7 @@ export default function Catalogo() {
         {/* ¿Qué flor buscas? Dibujo de cada flor + buscador */}
         <div ref={pickerRef} className="mb-10 bg-pearl border border-charcoal/10 p-4 sm:p-6">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
-            <h3 className="font-serif text-2xl text-charcoal">¿Qué flor buscas?</h3>
+            <h3 className="font-serif text-2xl text-charcoal">¿Qué estás buscando?</h3>
             <label className="relative sm:w-80">
               <span className="sr-only">Buscar una flor</span>
               <svg className="absolute left-3 top-1/2 -translate-y-1/2 text-stone-400" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
@@ -177,13 +193,45 @@ export default function Catalogo() {
                 type="search"
                 value={busca}
                 onChange={(e) => setBusca(e.target.value)}
-                onKeyDown={(e) => { if (e.key === 'Enter' && visibles[0]) { e.preventDefault(); elegir(visibles[0].flor) } }}
-                placeholder="Escribe una flor: rosa, girasol…"
+                onKeyDown={(e) => {
+                  if (e.key !== 'Enter') return
+                  e.preventDefault()
+                  if (visibles[0]) elegir(visibles[0].flor)
+                  else if (q && tiposVisibles.length === 1) cambiarTipo(tiposVisibles[0].key)
+                }}
+                placeholder="Busca: rosas, novia, funeral…"
                 className="w-full bg-white border border-charcoal/15 pl-10 pr-3 py-2.5 text-[16px] font-sans text-charcoal focus:outline-none focus:border-petal"
               />
             </label>
           </div>
 
+          {/* 1. Para qué es */}
+          {tiposVisibles.length > 0 && (
+            <>
+              <p className="font-sans text-[11px] font-semibold tracking-[0.25em] uppercase text-petal mb-2">Para qué es</p>
+              <div className="grid grid-cols-3 sm:grid-cols-5 gap-2 mb-5">
+                {tiposVisibles.map((t) => (
+                  <button
+                    key={t.key}
+                    onClick={() => cambiarTipo(t.key)}
+                    aria-pressed={tab === t.key}
+                    className={`group/flor flex flex-col items-center gap-1 py-3 px-1 border transition-colors duration-150 ${
+                      tab === t.key ? 'border-petal bg-petal-light' : 'border-charcoal/10 bg-white hover:border-petal/50'
+                    }`}
+                  >
+                    <TipoIcon tipo={t.key} size={60} className="transition-transform duration-300 group-hover/flor:-rotate-3 group-hover/flor:scale-110" />
+                    <span className="font-sans text-[13px] font-medium text-charcoal text-center leading-tight">{t.label}</span>
+                    <span className="font-sans text-[11px] text-stone-500">{POR_TIPO[t.key].length} fotos</span>
+                  </button>
+                ))}
+              </div>
+            </>
+          )}
+
+          {/* 2. Qué flor */}
+          <p className="font-sans text-[11px] font-semibold tracking-[0.25em] uppercase text-petal mb-2">
+            Qué flor{tab !== 'all' ? ` · en ${PLURAL[tab]}` : ''}
+          </p>
           <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-7 gap-2">
             {!q && (
               <button
@@ -197,7 +245,7 @@ export default function Catalogo() {
                   <FlorIcon flor="Rosas" size={48} /><FlorIcon flor="Girasoles" size={48} /><FlorIcon flor="Lilis" size={48} />
                 </span>
                 <span className="font-sans text-[13px] font-medium text-charcoal">Todas</span>
-                <span className="font-sans text-[11px] text-stone-500">{ALL.length} fotos</span>
+                <span className="font-sans text-[11px] text-stone-500">{POR_TIPO[tab].length} fotos</span>
               </button>
             )}
             {visibles.map(({ flor: f, fotos }) => (
@@ -229,27 +277,16 @@ export default function Catalogo() {
           </div>
           {q && !visibles.length && (
             <p className="font-sans text-sm text-stone-500 mt-4">
-              No tenemos fotos con "{busca.trim()}". Toca "No está la que yo quiero" y te la armamos por WhatsApp.
+              {tiposVisibles.length ? 'Toca el tipo de arreglo que buscas arriba.' : `No tenemos fotos con "${busca.trim()}". Toca "No está la que yo quiero" y te la armamos por WhatsApp.`}
             </p>
           )}
         </div>
 
         {/* Barra fija mientras recorren las fotos: tipo, flor elegida y cuántas hay */}
         <div className="sticky top-24 z-30 bg-pearl-dark -mx-6 px-6 lg:-mx-12 lg:px-12 py-3 mb-6 border-b border-charcoal/10 flex flex-wrap items-center gap-x-4 gap-y-2">
-          <div role="group" aria-label="Tipo" className="flex max-w-full overflow-x-auto border border-charcoal/15" style={{ scrollbarWidth: 'none' }}>
-            {TABS.map((t) => (
-              <button
-                key={t.key}
-                onClick={() => setTab(t.key)}
-                aria-pressed={tab === t.key}
-                className={`flex-none whitespace-nowrap px-3 sm:px-5 py-2 text-[12px] font-sans font-medium transition-colors duration-200 ${
-                  tab === t.key ? 'bg-petal text-white' : 'text-stone-600 hover:text-charcoal'
-                }`}
-              >
-                {t.label}
-              </button>
-            ))}
-          </div>
+          <button onClick={verPicker} className="flex items-center gap-1.5 pl-1 pr-3 py-1 bg-white border border-charcoal/15 text-[12px] font-sans text-charcoal hover:border-petal" aria-label="Cambiar tipo de arreglo">
+            <TipoIcon tipo={tab} size={26} /> {TABS.find((t) => t.key === tab).label}
+          </button>
           {flor ? (
             <button onClick={() => setFlor('')} className="flex items-center gap-1.5 pl-1 pr-3 py-1 bg-white border border-petal text-[12px] font-sans text-charcoal" aria-label={`Quitar filtro ${flor}`}>
               <FlorIcon flor={flor} size={26} /> {flor} <span className="text-stone-400 text-base leading-none ml-1">×</span>
@@ -258,6 +295,9 @@ export default function Catalogo() {
             <button onClick={verPicker} className="flex items-center gap-1.5 text-[12px] font-sans text-petal underline underline-offset-4">
               Elegir flor
             </button>
+          )}
+          {(flor || tab !== 'all') && (
+            <button onClick={verPicker} className="text-[12px] font-sans text-stone-500 underline underline-offset-4">Cambiar</button>
           )}
           <span className="ml-auto font-sans text-[12px] text-stone-500">{items.length} {items.length === 1 ? 'diseño' : 'diseños'}</span>
         </div>
