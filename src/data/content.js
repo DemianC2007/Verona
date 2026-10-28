@@ -142,6 +142,10 @@ const FLORES_FUNEBRES = [
 export const CATALOG_FUNEBRES = catalogo('funebre', FLORES_FUNEBRES)
 
 export const EVENTOS_GALLERY = [
+  // Taller de arreglos en calabaza (2026-10-27)
+  { id: 31, image: `${B}images/mini/evento_n31.webp`, ratio: '800 / 600', alt: 'Arreglos de temporada en calabazas con rosas, crisantemos y margaritas' },
+  { id: 32, image: `${B}images/mini/evento_n32.webp`, ratio: '800 / 600', alt: 'Grupo del taller de Magenta con sus arreglos en calabaza' },
+  { id: 33, image: `${B}images/mini/evento_n33.webp`, ratio: '800 / 601', alt: 'Taller de diseño floral: armando arreglos en calabaza' },
   { id: 1,  image: `${B}images/mini/evento_n01.webp`, ratio: '768 / 778', alt: 'Mesa de banquete estilo boho al atardecer en la playa' },
   { id: 2,  image: `${B}images/mini/evento_n03.webp`, ratio: '800 / 1067', alt: 'Decoración de mesa larga con camino fucsia en terraza frente al mar' },
   { id: 3,  image: `${B}images/mini/evento_n14.webp`, ratio: '800 / 801', alt: 'Altar ceremonial iluminado con flores naranjas y rojas en la playa' },
