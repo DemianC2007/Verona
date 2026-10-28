@@ -4,7 +4,7 @@ import { WA_NUM } from '../data/content'
 
 // Formulario que sale al pedir un ramo o arreglo. Todo es opcional y aproximado (Demian, 2026-10-25):
 // Angel termina de calificar el pedido por WhatsApp. Al enviarlo se guarda en el panel (y llega por correo) y abre WhatsApp con el pedido ya escrito.
-const PEDIDOS_URL = 'https://analytics.veronafloreria.online/api/pedido'
+const PEDIDOS_URL = 'https://analytics.magentaflores.store/api/pedido'
 const hoy = () => {
   const d = new Date()
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
