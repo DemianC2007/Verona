@@ -141,6 +141,14 @@ const FLORES_FUNEBRES = [
 ]
 export const CATALOG_FUNEBRES = catalogo('funebre', FLORES_FUNEBRES)
 
+// Ramos de novia (2026-10-28)
+const FLORES_NOVIAS = [
+  ['Calas'],                                  // 01
+  ['Calas', 'Crisantemos'],                   // 02
+  ['Calas', 'Crisantemos'],                   // 03
+]
+export const CATALOG_NOVIAS = catalogo('novia', FLORES_NOVIAS)
+
 export const EVENTOS_GALLERY = [
   // Taller de arreglos en calabaza (2026-10-27)
   { id: 31, image: `${B}images/mini/evento_n31.webp`, ratio: '800 / 600', alt: 'Arreglos de temporada en calabazas con rosas, crisantemos y margaritas' },

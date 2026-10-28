@@ -1,6 +1,6 @@
 import { useState, useRef, useMemo, useCallback } from 'react'
 import { motion, useInView, AnimatePresence } from 'framer-motion'
-import { CATALOG_ARREGLOS, CATALOG_RAMOS, CATALOG_FUNEBRES, WA_NUM } from '../data/content'
+import { CATALOG_ARREGLOS, CATALOG_RAMOS, CATALOG_FUNEBRES, CATALOG_NOVIAS, WA_NUM } from '../data/content'
 import PedidoForm from './PedidoForm'
 import FlorIcon from './FlorIcon'
 import Foto from './Foto'
@@ -9,14 +9,15 @@ const TABS = [
   { key: 'all', label: 'Todos' },
   { key: 'arreglo', label: 'Arreglos en caja / jarrón' },
   { key: 'ramo', label: 'Ramos' },
+  { key: 'novia', label: 'Novias' },
   { key: 'funebre', label: 'Servicios fúnebres' },
 ]
 
-const ALL = [...CATALOG_ARREGLOS, ...CATALOG_RAMOS, ...CATALOG_FUNEBRES]
-const POR_TIPO = { all: ALL, arreglo: CATALOG_ARREGLOS, ramo: CATALOG_RAMOS, funebre: CATALOG_FUNEBRES }
+const ALL = [...CATALOG_ARREGLOS, ...CATALOG_RAMOS, ...CATALOG_NOVIAS, ...CATALOG_FUNEBRES]
+const POR_TIPO = { all: ALL, arreglo: CATALOG_ARREGLOS, ramo: CATALOG_RAMOS, novia: CATALOG_NOVIAS, funebre: CATALOG_FUNEBRES }
 // Cómo se nombra cada tipo en textos y mensajes
-const NOMBRE = { arreglo: 'arreglo', ramo: 'ramo', funebre: 'arreglo fúnebre' }
-const PLURAL = { arreglo: 'arreglos', ramo: 'ramos', funebre: 'arreglos fúnebres', all: 'arreglos' }
+const NOMBRE = { arreglo: 'arreglo', ramo: 'ramo', novia: 'ramo de novia', funebre: 'arreglo fúnebre' }
+const PLURAL = { arreglo: 'arreglos', ramo: 'ramos', novia: 'ramos de novia', funebre: 'arreglos fúnebres', all: 'arreglos' }
 
 const PROD_BASE = 'https://magentaflores.store'
 
@@ -41,6 +42,7 @@ const OTROS_NOMBRES = {
   Nube: ['nube', 'gypsophila', 'gipsofila', 'aliento de bebe', 'paniculata', 'baby breath'],
   Perritos: ['perrito', 'snapdragon', 'boca de dragon', 'antirrhinum'],
   Anturios: ['anturio', 'anthurium'],
+  Calas: ['cala', 'alcatraz', 'alcatraces', 'calla', 'lirio de agua'],
 }
 const norm = (t) => t.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim()
 const coincide = (flor, q) => {
@@ -158,7 +160,7 @@ export default function Catalogo() {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="mt-5 font-sans text-stone-500 text-base leading-relaxed max-w-xl"
           >
-            Arreglos en caja y jarrón, ramos, bouquets y coronas para servicios fúnebres. Filtra por la flor que buscas y toca el que te guste para pedirlo.
+            Arreglos en caja y jarrón, ramos, ramos de novia y coronas para servicios fúnebres. Filtra por la flor que buscas y toca el que te guste para pedirlo.
           </motion.p>
         </div>
 

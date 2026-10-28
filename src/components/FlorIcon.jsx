@@ -146,6 +146,15 @@ const FLORES = {
       ))}
     </g>
   ),
+  Calas: () => (
+    <g>
+      <path d="M24 46 C 24 38 23 32 22 26" stroke={TALLO} strokeWidth="1.8" strokeLinecap="round" fill="none" />
+      <path d="M22 27 C 14 25 11 16 14 8 C 17 12 22 12 28 9 C 32 7 36 8 37 6 C 37 14 33 22 22 27 Z"
+        fill="#F5D33B" stroke={LINEA} strokeWidth="0.9" strokeLinejoin="round" />
+      <path d="M22 27 C 21 20 24 14 30 10" fill="none" stroke="#C9A417" strokeWidth="0.8" />
+      <path d="M23 24 C 24 19 26 15 28 13" stroke="#E08A1E" strokeWidth="2.2" strokeLinecap="round" fill="none" />
+    </g>
+  ),
   Anturios: () => (
     <g>
       <Tallo y={34} hoja={false} />
