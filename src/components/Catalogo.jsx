@@ -1,6 +1,6 @@
 import { useState, useRef, useMemo, useCallback } from 'react'
 import { motion, useInView, AnimatePresence } from 'framer-motion'
-import { CATALOG_ARREGLOS, CATALOG_RAMOS, WA_NUM } from '../data/content'
+import { CATALOG_ARREGLOS, CATALOG_RAMOS, CATALOG_FUNEBRES, WA_NUM } from '../data/content'
 import PedidoForm from './PedidoForm'
 import FlorIcon from './FlorIcon'
 import Foto from './Foto'
@@ -9,9 +9,14 @@ const TABS = [
   { key: 'all', label: 'Todos' },
   { key: 'arreglo', label: 'Arreglos en caja / jarrón' },
   { key: 'ramo', label: 'Ramos' },
+  { key: 'funebre', label: 'Servicios fúnebres' },
 ]
 
-const ALL = [...CATALOG_ARREGLOS, ...CATALOG_RAMOS]
+const ALL = [...CATALOG_ARREGLOS, ...CATALOG_RAMOS, ...CATALOG_FUNEBRES]
+const POR_TIPO = { all: ALL, arreglo: CATALOG_ARREGLOS, ramo: CATALOG_RAMOS, funebre: CATALOG_FUNEBRES }
+// Cómo se nombra cada tipo en textos y mensajes
+const NOMBRE = { arreglo: 'arreglo', ramo: 'ramo', funebre: 'arreglo fúnebre' }
+const PLURAL = { arreglo: 'arreglos', ramo: 'ramos', funebre: 'arreglos fúnebres', all: 'arreglos' }
 
 const PROD_BASE = 'https://magentaflores.store'
 
@@ -49,7 +54,7 @@ const coincide = (flor, q) => {
 function CatalogCard({ item, index, onPedir }) {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '300px 0px' })
-  const label = item.tipo === 'arreglo' ? 'arreglo' : 'ramo'
+  const label = NOMBRE[item.tipo]
 
   return (
     <motion.div
@@ -68,7 +73,7 @@ function CatalogCard({ item, index, onPedir }) {
       >
         <Foto
           src={item.image}
-          alt={`${item.tipo === 'arreglo' ? 'Arreglo' : 'Ramo'} con ${item.flores.join(', ').toLowerCase()}`}
+          alt={`${label[0].toUpperCase() + label.slice(1)} con ${item.flores.join(', ').toLowerCase()}`}
           className="w-full h-full"
           imgClassName="group-hover:scale-[1.06]"
         />
@@ -107,12 +112,12 @@ export default function Catalogo() {
   const headerRef = useRef(null)
   const inView = useInView(headerRef, { once: true, margin: '-80px' })
 
-  const porTipo = tab === 'all' ? ALL : tab === 'arreglo' ? CATALOG_ARREGLOS : CATALOG_RAMOS
+  const porTipo = POR_TIPO[tab]
   const items = useMemo(() => (flor ? porTipo.filter((it) => it.flores.includes(flor)) : porTipo), [porTipo, flor])
   const waMsg = encodeURIComponent('Hola Magenta, me gustaría hacer un pedido del catálogo.')
 
   const pedir = useCallback((item) => {
-    const etiqueta = item.tipo === 'arreglo' ? 'arreglo' : 'ramo'
+    const etiqueta = NOMBRE[item.tipo]
     setPedido({
       etiqueta, seccion: 'catalogo', imagen: item.image, imagenUrl: `${PROD_BASE}/images/${item.id}.jpg`,
       detalle: `${PROD_BASE}/images/${item.id}.jpg (${item.flores.join(', ').toLowerCase()})`,
@@ -153,7 +158,7 @@ export default function Catalogo() {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="mt-5 font-sans text-stone-500 text-base leading-relaxed max-w-xl"
           >
-            Arreglos en caja y jarrón, ramos y bouquets. Filtra por la flor que buscas y toca el que te guste para pedirlo.
+            Arreglos en caja y jarrón, ramos, bouquets y coronas para servicios fúnebres. Filtra por la flor que buscas y toca el que te guste para pedirlo.
           </motion.p>
         </div>
 
@@ -229,13 +234,13 @@ export default function Catalogo() {
 
         {/* Barra fija mientras recorren las fotos: tipo, flor elegida y cuántas hay */}
         <div className="sticky top-24 z-30 bg-pearl-dark -mx-6 px-6 lg:-mx-12 lg:px-12 py-3 mb-6 border-b border-charcoal/10 flex flex-wrap items-center gap-x-4 gap-y-2">
-          <div role="group" aria-label="Tipo" className="flex border border-charcoal/15">
+          <div role="group" aria-label="Tipo" className="flex max-w-full overflow-x-auto border border-charcoal/15" style={{ scrollbarWidth: 'none' }}>
             {TABS.map((t) => (
               <button
                 key={t.key}
                 onClick={() => setTab(t.key)}
                 aria-pressed={tab === t.key}
-                className={`px-3 sm:px-5 py-2 text-[12px] font-sans font-medium transition-colors duration-200 ${
+                className={`flex-none whitespace-nowrap px-3 sm:px-5 py-2 text-[12px] font-sans font-medium transition-colors duration-200 ${
                   tab === t.key ? 'bg-petal text-white' : 'text-stone-600 hover:text-charcoal'
                 }`}
               >
@@ -273,8 +278,8 @@ export default function Catalogo() {
         </AnimatePresence>
         {!items.length && (
           <p className="font-sans text-stone-500 text-sm py-10 text-center">
-            No tenemos fotos de {tab === 'arreglo' ? 'arreglos' : 'ramos'} con {flor.toLowerCase()} todavía, pero te lo podemos hacer.{' '}
-            <a href={`https://wa.me/${WA_NUM}?text=${encodeURIComponent(`Hola Magenta, me gustaría un ${tab === 'arreglo' ? 'arreglo' : 'ramo'} con ${flor.toLowerCase()}.`)}`}
+            No tenemos fotos de {PLURAL[tab]} con {flor.toLowerCase()} todavía, pero te lo podemos hacer.{' '}
+            <a href={`https://wa.me/${WA_NUM}?text=${encodeURIComponent(`Hola Magenta, me gustaría un ${tab === 'all' ? 'arreglo' : NOMBRE[tab]} con ${flor.toLowerCase()}.`)}`}
               target="_blank" rel="noopener noreferrer" className="text-petal underline underline-offset-2">Pídelo por WhatsApp</a>
           </p>
         )}

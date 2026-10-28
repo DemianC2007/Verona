@@ -129,6 +129,18 @@ const catalogo = (tipo, flores) => flores.map((f, i) => {
 export const CATALOG_ARREGLOS = catalogo('arreglo', FLORES_ARREGLOS)
 export const CATALOG_RAMOS = catalogo('ramo', FLORES_RAMOS)
 
+// Coronas para servicios fúnebres (2026-10-28). Los nombres de las cintas van difuminados
+// (son de familias reales); los originales están en brand/funebres-originales.
+const FLORES_FUNEBRES = [
+  ['Rosas', 'Gerberas', 'Claveles'],          // 01
+  ['Rosas', 'Margaritas', 'Perritos'],        // 02
+  ['Rosas', 'Gerberas', 'Claveles', 'Perritos'], // 03
+  ['Gerberas', 'Rosas', 'Claveles'],          // 04
+  ['Crisantemos', 'Lilis', 'Perritos'],       // 05
+  ['Girasoles', 'Claveles', 'Lilis'],         // 06
+]
+export const CATALOG_FUNEBRES = catalogo('funebre', FLORES_FUNEBRES)
+
 export const EVENTOS_GALLERY = [
   { id: 1,  image: `${B}images/mini/evento_n01.webp`, ratio: '768 / 778', alt: 'Mesa de banquete estilo boho al atardecer en la playa' },
   { id: 2,  image: `${B}images/mini/evento_n03.webp`, ratio: '800 / 1067', alt: 'Decoración de mesa larga con camino fucsia en terraza frente al mar' },
