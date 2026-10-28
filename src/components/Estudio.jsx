@@ -60,7 +60,7 @@ export default function Estudio() {
   const [pedido, setPedido] = useState(null)
   const cerrar = useCallback(() => setPedido(null), [])
   const pedir = useCallback((p) => setPedido({
-    etiqueta: 'arreglo', seccion: 'estudio', imagen: p.image, imagenUrl: `https://veronafloreria.online${p.image}`, detalle: `"${p.name}" (${p.price})`,
+    etiqueta: 'arreglo', seccion: 'estudio', imagen: p.image, imagenUrl: `https://magentaflores.store${p.image}`, detalle: `"${p.name}" (${p.price})`,
   }), [])
 
   return (

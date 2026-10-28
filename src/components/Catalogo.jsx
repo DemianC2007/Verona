@@ -13,7 +13,7 @@ const TABS = [
 
 const ALL = [...CATALOG_ARREGLOS, ...CATALOG_RAMOS]
 
-const PROD_BASE = 'https://veronafloreria.online'
+const PROD_BASE = 'https://magentaflores.store'
 
 // Flores del buscador, de la más común a la menos común
 const FLORES = (() => {
